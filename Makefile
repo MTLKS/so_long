@@ -3,7 +3,14 @@ CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -rf
 LIBFT		= libft
-MLXFLAGS	= -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+
+UNAME := $(shell uname)
+ifeq ($(UNAME), Linux)
+	MLXFLAGS	= -Lmlx_linux -lmlx_Linux -L/usr/lib -I/usr/include -Imlx_linux -lXext -lX11 -lm -lz
+endif
+ifeq ($(UNAME), Darwin)
+	MLXFLAGS	= -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit -Imlx
+endif
 
 INCLUDES	= ./includes
 SRC_PATH	= ./src
@@ -18,10 +25,10 @@ bonus:	all
 
 $(NAME):	$(OBJS)
 			$(MAKE) -C $(LIBFT)
-			$(CC) $(CFLAGS) $^ $(MLXFLAGS) -Imlx -I$(INCLUDES) -L$(LIBFT) -lft -o $@
+			$(CC) $(CFLAGS) $^ $(MLXFLAGS) -I$(INCLUDES) -L$(LIBFT) -lft -o $@
 
 $(OBJ_PATH)/%.o:	$(SRC_PATH)/%.c* | $(OBJ_PATH)
-					$(CC) $(CFLAGS) -c -I$(INCLUDES) $< -o $@
+					$(CC) $(CFLAGS) $(MLXFLAGS) -c -I$(INCLUDES) $< -o $@
 
 $(OBJ_PATH):
 				mkdir -p $(OBJ_PATH)
