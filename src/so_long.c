@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/19 03:23:33 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/20 19:53:10 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	key_hook(int keycode, t_sl_player *player)
 		player->dir = 0;
 	else if (keycode == KEY_D && player->dir == 0)
 		player->dir = 1;
-	ft_printf("%d\n", keycode);
 	return (0);
 }
 
@@ -54,6 +53,7 @@ int	render(t_sl_context *context)
 		mlx_put_image_to_window(context->mlx, context->win, buffer->img, 0, 0);
 		mlx_destroy_image(context->mlx, buffer->img);
 		free(buffer);
+		sl_print_context(context);
 	}
 	i++;
 	return (0);
@@ -81,21 +81,20 @@ int	main(int argc, char **argv)
 	context->player->x = 64;
 	context->player->y = 64;
 	context->player->dir = 1;
-	// context->player->frames = (t_sl_img **)malloc(sizeof(t_sl_img *));
 	context->player->s_right = malloc(sizeof(t_sl_anim));
 	context->player->s_right->frames = malloc(sizeof(t_sl_img));
 	context->player->s_right->frames->img = mlx_xpm_file_to_image(context->mlx,
-			"/home/mtlks/42/core/so_long/repo/assets/sprites/cat_s_right.xpm", &context->player->s_right->frames->width, &context->player->s_right->frames->height);
+			"./assets/sprites/cat_s_right.xpm", &context->player->s_right->frames->width, &context->player->s_right->frames->height);
 	context->player->s_left = malloc(sizeof(t_sl_anim));
 	context->player->s_left->frames = malloc(sizeof(t_sl_img));
 	context->player->s_left->frames->img = mlx_xpm_file_to_image(context->mlx,
-			"/home/mtlks/42/core/so_long/repo/assets/sprites/cat_s_left.xpm", &context->player->s_left->frames->width, &context->player->s_left->frames->height);
+			"./assets/sprites/cat_s_left.xpm", &context->player->s_left->frames->width, &context->player->s_left->frames->height);
 	context->scene = malloc(sizeof(t_sl_img));
 	context->scene->img = mlx_new_image(context->mlx, 640, 320);
 	context->scene->width = 640;
 	context->scene->height = 320;
 	ground->img = mlx_xpm_file_to_image(context->mlx,
-			"/home/mtlks/42/core/so_long/repo/assets/sprites/ground.xpm", &ground->width, &ground->height);
+			"./assets/sprites/ground.xpm", &ground->width, &ground->height);
 	sl_parse_map(context, argv[1]);
 	mlx_loop_hook(context->mlx, render, context);
 	mlx_key_hook(context->win, key_hook, context->player);

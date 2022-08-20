@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/19 02:52:41 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/20 19:38:56 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,24 +72,20 @@ typedef struct s_sl_enemy
 	t_sl_anim	*s_right;
 	t_sl_anim	*w_left;
 	t_sl_anim	*w_right;
-	int			x;
-	int			y;
-	int			dir;
+	t_list		*coords;
 }	t_sl_enemy;
 
 typedef struct s_sl_coll
 {
 	t_sl_anim	*anim;
-	int			x;
-	int			y;
+	t_list		*coords;
 }	t_sl_coll;
 
 typedef struct s_sl_exit
 {
 	t_sl_anim	*open;
 	t_sl_anim	*closed;
-	int			x;
-	int			y;
+	t_list		*coords;
 }	t_sl_exit;
 
 typedef struct s_sl_ui
@@ -117,9 +113,9 @@ typedef struct s_sl_context
 	t_sl_img	*scene;
 	t_sl_map	*map;
 	t_sl_player	*player;
-	t_sl_coll	**colls;
-	t_sl_exit	**exits;
-	t_sl_enemy	**enemies;
+	t_sl_coll	*colls;
+	t_sl_exit	*exits;
+	t_sl_enemy	*enemies;
 	t_sl_ui		*ui;
 }	t_sl_context;
 
@@ -127,5 +123,12 @@ void		sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
 void		sl_parse_map(t_sl_context *c, char *path);
 t_sl_img	*sl_xpm_to_img(void *mlx, char *path);
 t_sl_img	*sl_new_img(void *mlx, int width, int height);
+
+t_sl_anim	*sl_init_anim(int frame_count);
+
+void		sl_print_context(t_sl_context *c);
+
+t_sl_coll	*sl_init_coll(void);
+void		sl_add_coll_coords(t_sl_coll *colls, int x, int y);
 
 #endif

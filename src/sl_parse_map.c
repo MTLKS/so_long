@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/19 03:34:41 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/20 20:23:11 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,35 @@ void	sl_generate_map_img(void *mlx, t_sl_map *map)
 	}
 }
 
+void	sl_generate_colls(t_sl_coll *colls, t_sl_map *map)
+{
+	t_list	*buffer;
+	int		i;
+	int		j;
+
+	buffer = map->data;
+	j = 0;
+	while (buffer)
+	{
+		i = -1;
+		while (((char *)buffer->content)[++i])
+		{
+			if (((char *)buffer->content)[i] == 'C')
+				sl_add_coll_coords(colls, i * 64, j * 64);
+		}
+		buffer = buffer->next;
+		j++;
+	}
+}
+
 void	sl_parse_map(t_sl_context *c, char *path)
 {
 	int		fd;
 	char	*buffer;
 
 	fd = open(path, O_RDONLY);
+	// if (fd == -1)
+		// send error
 	sl_init_map(&c->map);
 	buffer = get_next_line(fd);
 	while (buffer)
@@ -65,4 +88,9 @@ void	sl_parse_map(t_sl_context *c, char *path)
 	}
 	c->map->width = ft_strlen(c->map->data->content);
 	sl_generate_map_img(c->mlx, c->map);
+	c->colls = sl_init_coll();
+	c->colls->anim = malloc(sizeof(t_sl_anim));
+	c->colls->anim->frames = malloc(sizeof(t_sl_img));
+	c->colls->anim->frames->img = mlx_xpm_file_to_image(c->mlx, "./assets/sprites/popcorn.xpm", &c->colls->anim->frames->width, &c->colls->anim->frames->height);
+	sl_generate_colls(c->colls, c->map);
 }
