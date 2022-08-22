@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/20 19:38:56 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/21 19:36:45 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 
 # define ON_DESTROY 17
 
+# define SCREEN_W 640
+# define SCREEN_H 320
 # define PLAYER_STEP 16
+# define LOOPS_PER_TICK 1000
 
 # ifdef __APPLE__
 #  define KEY_A 0
@@ -50,7 +53,7 @@ typedef struct s_sl_img
 
 typedef struct s_sl_anim
 {
-	t_sl_img	*frames;
+	t_list		*frames;
 	int			frame_count;
 }	t_sl_anim;
 
@@ -124,11 +127,22 @@ void		sl_parse_map(t_sl_context *c, char *path);
 t_sl_img	*sl_xpm_to_img(void *mlx, char *path);
 t_sl_img	*sl_new_img(void *mlx, int width, int height);
 
-t_sl_anim	*sl_init_anim(int frame_count);
-
 void		sl_print_context(t_sl_context *c);
 
-t_sl_coll	*sl_init_coll(void);
-void		sl_add_coll_coords(t_sl_coll *colls, int x, int y);
+t_sl_coll	*sl_coll_init(void);
+void		sl_coll_add_coords(t_sl_coll *coll, int x, int y);
+t_sl_img	*sl_coll_get_anim(t_sl_coll *coll);
+int			*sl_coll_get_coords(t_sl_coll *coll, int index);
+void		sl_coll_copy_all(t_sl_img *img, t_sl_context *c);
+
+t_sl_anim	*sl_anim_init(void);
+void		sl_anim_add_frame(t_sl_anim *anim, t_sl_img *img);
+t_sl_img	*sl_anim_get_frame(t_sl_anim *anim, int index);
+
+t_sl_player	*sl_player_init(void);
+t_sl_img	*sl_player_get_anim(t_sl_player *p);
+
+t_sl_enemy	*sl_enemy_init(void);
+void		sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
 
 #endif

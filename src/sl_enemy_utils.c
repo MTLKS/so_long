@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sl_colls_utils.c                                   :+:      :+:    :+:   */
+/*   sl_enemy_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/20 17:26:44 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/20 19:39:04 by maliew           ###   ########.fr       */
+/*   Created: 2022/08/21 14:52:10 by maliew            #+#    #+#             */
+/*   Updated: 2022/08/21 15:17:25 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_sl_coll	*sl_init_coll(void)
+t_sl_enemy	*sl_enemy_init(void)
 {
-	t_sl_coll	*coll;
+	t_sl_enemy	*enemy;
 
-	coll = (t_sl_coll *)malloc(sizeof(t_sl_coll));
-	coll->anim = sl_init_anim(0);
-	coll->coords = NULL;
-	return (coll);
+	enemy = (t_sl_enemy *)malloc(sizeof(t_sl_enemy));
+	enemy->s_left = sl_anim_init();
+	enemy->s_right = sl_anim_init();
+	enemy->w_left = sl_anim_init();
+	enemy->w_right = sl_anim_init();
+	enemy->coords = NULL;
+	return (enemy);
 }
 
-void	sl_add_coll_coords(t_sl_coll *colls, int x, int y)
+void	sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir)
 {
 	int	*arr;
 
-	arr = (int *)malloc(2 * sizeof(int));
+	arr = (int *)malloc(3 * sizeof(int));
 	arr[0] = x;
 	arr[1] = y;
-	ft_lstadd_back(&colls->coords, ft_lstnew(arr));
+	arr[2] = dir;
+	ft_lstadd_back(&enemy->coords, ft_lstnew(arr));
 }

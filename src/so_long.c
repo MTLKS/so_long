@@ -6,13 +6,13 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/20 19:53:10 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/21 19:41:52 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	key_hook(int keycode, t_sl_player *player)
+int	sl_key_hook(int keycode, t_sl_player *player)
 {
 	if (keycode == KEY_ESC)
 		exit(0);
@@ -31,29 +31,27 @@ int	key_hook(int keycode, t_sl_player *player)
 	return (0);
 }
 
-int	render(t_sl_context *context)
+int	sl_render(t_sl_context *c)
 {
 	static int	i = 0;
 	t_sl_img	*buffer;
 
-	// (void)context;
-	(void)buffer;
-	if (i > 1000)
+	if (i > LOOPS_PER_TICK)
 	{
 		i = 0;
-		buffer = malloc(sizeof(t_sl_img));
-		buffer->img = mlx_new_image(context->mlx, 640, 320);
-		buffer->width = 640;
-		buffer->height = 320;
-		sl_copy_image(buffer, context->map->img, 288-context->player->x, 128-context->player->y);
-		if (context->player->dir)
-			sl_copy_image(buffer, context->player->s_right->frames, 288, 128);
-		else
-			sl_copy_image(buffer, context->player->s_left->frames, 288, 128);
-		mlx_put_image_to_window(context->mlx, context->win, buffer->img, 0, 0);
-		mlx_destroy_image(context->mlx, buffer->img);
+		buffer = sl_new_img(c->mlx, SCREEN_W, SCREEN_H);
+		sl_copy_image(buffer, c->map->img, 288-c->player->x, 128-c->player->y);
+		// if (c->player->dir)
+		// 	sl_copy_image(buffer, sl_anim_get_frame(c->player->s_right, 0), 288, 128);
+		// else
+		// 	sl_copy_image(buffer, sl_anim_get_frame(c->player->s_left, 0), 288, 128);
+		sl_copy_image(buffer, sl_player_get_anim(c->player), 288, 128);
+		// sl_copy_image(buffer, sl_coll_get_anim(c->colls), 288-(c->player->x)+sl_coll_get_coords(c->colls, 0)[0], 128-(c->player->y)+sl_coll_get_coords(c->colls, 0)[1]);
+		sl_coll_copy_all(buffer, c);
+		mlx_put_image_to_window(c->mlx, c->win, buffer->img, 0, 0);
+		mlx_destroy_image(c->mlx, buffer->img);
 		free(buffer);
-		sl_print_context(context);
+		sl_print_context(c);
 	}
 	i++;
 	return (0);
@@ -62,42 +60,35 @@ int	render(t_sl_context *context)
 int	sl_close(t_sl_context *context)
 {
 	mlx_destroy_window(context->mlx, context->win);
-	return (0);
+	exit(0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_sl_context	*context;
-	t_sl_img		*ground;
+	t_sl_context	*c;
 
+	// pause();
 	if (argc != 2)
 		return (0);
 	ft_printf("Hello World!\n");
-	context = (t_sl_context *)malloc(sizeof(t_sl_context));
-	ground = malloc(sizeof(t_sl_img));
-	context->mlx = mlx_init();
-	context->win = mlx_new_window(context->mlx, 640, 320, "Hello world!");
-	context->player = (t_sl_player *)malloc(sizeof(t_sl_player));
-	context->player->x = 64;
-	context->player->y = 64;
-	context->player->dir = 1;
-	context->player->s_right = malloc(sizeof(t_sl_anim));
-	context->player->s_right->frames = malloc(sizeof(t_sl_img));
-	context->player->s_right->frames->img = mlx_xpm_file_to_image(context->mlx,
-			"./assets/sprites/cat_s_right.xpm", &context->player->s_right->frames->width, &context->player->s_right->frames->height);
-	context->player->s_left = malloc(sizeof(t_sl_anim));
-	context->player->s_left->frames = malloc(sizeof(t_sl_img));
-	context->player->s_left->frames->img = mlx_xpm_file_to_image(context->mlx,
-			"./assets/sprites/cat_s_left.xpm", &context->player->s_left->frames->width, &context->player->s_left->frames->height);
-	context->scene = malloc(sizeof(t_sl_img));
-	context->scene->img = mlx_new_image(context->mlx, 640, 320);
-	context->scene->width = 640;
-	context->scene->height = 320;
-	ground->img = mlx_xpm_file_to_image(context->mlx,
-			"./assets/sprites/ground.xpm", &ground->width, &ground->height);
-	sl_parse_map(context, argv[1]);
-	mlx_loop_hook(context->mlx, render, context);
-	mlx_key_hook(context->win, key_hook, context->player);
-	mlx_hook(context->win, ON_DESTROY, 0L, sl_close, context);
-	mlx_loop(context->mlx);
+	c = (t_sl_context *)malloc(sizeof(t_sl_context));
+	c->mlx = mlx_init();
+	c->win = mlx_new_window(c->mlx, SCREEN_W, SCREEN_H, "so_long");
+	c->player = sl_player_init();
+	c->player->x = 256;
+	c->player->y = 192;
+	c->player->dir = 1;
+	sl_anim_add_frame(c->player->s_right, sl_xpm_to_img(c->mlx, "./assets/sprites/cat_s_right.xpm"));
+	sl_anim_add_frame(c->player->s_right, sl_xpm_to_img(c->mlx, "./assets/sprites/cat_s_right2.xpm"));
+	sl_anim_add_frame(c->player->s_left, sl_xpm_to_img(c->mlx, "./assets/sprites/cat_s_left.xpm"));
+	sl_anim_add_frame(c->player->s_left, sl_xpm_to_img(c->mlx, "./assets/sprites/cat_s_left2.xpm"));
+	c->scene = sl_new_img(c->mlx, 640, 320);
+	c->colls = sl_coll_init();
+	sl_anim_add_frame(c->colls->anim, sl_xpm_to_img(c->mlx, "./assets/sprites/popcorn.xpm"));
+	sl_anim_add_frame(c->colls->anim, sl_xpm_to_img(c->mlx, "./assets/sprites/popcorn2.xpm"));
+	sl_parse_map(c, argv[1]);
+	mlx_loop_hook(c->mlx, sl_render, c);
+	mlx_key_hook(c->win, sl_key_hook, c->player);
+	mlx_hook(c->win, ON_DESTROY, 0L, sl_close, c);
+	mlx_loop(c->mlx);
 }

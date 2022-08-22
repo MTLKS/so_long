@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sl_img_utils.c                                     :+:      :+:    :+:   */
+/*   sl_exit_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/18 23:45:51 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/21 15:01:34 by maliew           ###   ########.fr       */
+/*   Created: 2022/08/21 14:52:07 by maliew            #+#    #+#             */
+/*   Updated: 2022/08/21 15:18:49 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_sl_img	*sl_xpm_to_img(void *mlx, char *path)
+t_sl_exit	*sl_exit_init(void)
 {
-	t_sl_img	*res;
+	t_sl_exit	*exit;
 
-	res = (t_sl_img *)malloc(sizeof(t_sl_img));
-	res->img = mlx_xpm_file_to_image(mlx, path, &res->width, &res->height);
-	return (res);
+	exit = (t_sl_exit *)malloc(sizeof(t_sl_exit));
+	exit->open = sl_anim_init();
+	exit->closed = sl_anim_init();
+	exit->coords = NULL;
+	return (exit);
 }
 
-t_sl_img	*sl_new_img(void *mlx, int width, int height)
+void	sl_exit_add_coords(t_sl_exit *exit, int x, int y)
 {
-	t_sl_img	*res;
+	int	*arr;
 
-	res = (t_sl_img *)malloc(sizeof(t_sl_img));
-	res->img = mlx_new_image(mlx, width, height);
-	res->width = width;
-	res->height = height;
-	return (res);
+	arr = (int *)malloc(2 * sizeof(int));
+	arr[0] = x;
+	arr[1] = y;
+	ft_lstadd_back(&exit->coords, ft_lstnew(arr));
 }
