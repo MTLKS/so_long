@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/21 19:14:45 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/27 02:19:10 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,56 +21,41 @@ void	sl_init_map(t_sl_map **map)
 	(*map)->height = 0;
 }
 
-void	sl_generate_map_img(void *mlx, t_sl_map *map)
+void	sl_parse_character(t_sl_context *ctx, char c, int x, int y)
 {
-	t_list		*buffer;
-	int			i;
-	int			j;
-	t_sl_img	*ground;
-	t_sl_img	*wall;
-
-	map->img = sl_new_img(mlx, map->width * 64, map->height * 64);
-	ground = sl_xpm_to_img(mlx, "./assets/sprites/ground.xpm");
-	wall = sl_xpm_to_img(mlx, "./assets/sprites/wall.xpm");
-	buffer = map->data;
-	j = 0;
-	while (buffer)
-	{
-		i = -1;
-		while (((char *)buffer->content)[++i])
-		{
-			if (((char *)buffer->content)[i] == '1')
-				sl_copy_image(map->img, wall, i * 64, j * 64);
-			else if (ft_strchr("CENP0", ((char *)buffer->content)[i]))
-				sl_copy_image(map->img, ground, i * 64, j * 64);
-		}
-		buffer = buffer->next;
-		j++;
-	}
+	if (c == 'P')
+		sl_player_set_coords(ctx->player, x * SPRITE_SIZE, y * SPRITE_SIZE);
+	else if (c == 'C')
+		sl_coll_add_coords(ctx->colls, x * SPRITE_SIZE, y * SPRITE_SIZE);
+	else if (c == 'E')
+		sl_exit_add_coords(ctx->exits, x * SPRITE_SIZE, y * SPRITE_SIZE);
+	if (c == '1')
+		sl_copy_image(ctx->map->img, ctx->imgs->wall,
+			x * SPRITE_SIZE, y * SPRITE_SIZE);
+	else if (ft_strchr("CENP0", c))
+		sl_copy_image(ctx->map->img, ctx->imgs->ground,
+			x * SPRITE_SIZE, y * SPRITE_SIZE);
 }
 
-void	sl_generate_colls(t_sl_coll *colls, t_sl_map *map)
+void	sl_loop_map(t_sl_context *ctx)
 {
 	t_list	*buffer;
-	int		i;
-	int		j;
+	int		x;
+	int		y;
 
-	buffer = map->data;
-	j = 0;
+	buffer = ctx->map->data;
+	y = 0;
 	while (buffer)
 	{
-		i = -1;
-		while (((char *)buffer->content)[++i])
-		{
-			if (((char *)buffer->content)[i] == 'C')
-				sl_coll_add_coords(colls, i * 64, j * 64);
-		}
+		x = -1;
+		while (((char *)buffer->content)[++x])
+			sl_parse_character(ctx, ((char *)buffer->content)[x], x, y);
 		buffer = buffer->next;
-		j++;
+		y++;
 	}
 }
 
-void	sl_parse_map(t_sl_context *c, char *path)
+void	sl_parse_map(t_sl_context *ctx, char *path)
 {
 	int		fd;
 	char	*buffer;
@@ -78,15 +63,16 @@ void	sl_parse_map(t_sl_context *c, char *path)
 	fd = open(path, O_RDONLY);
 	// if (fd == -1)
 		// send error
-	sl_init_map(&c->map);
+	sl_init_map(&ctx->map);
 	buffer = get_next_line(fd);
 	while (buffer)
 	{
-		c->map->height++;
-		ft_lstadd_back(&c->map->data, ft_lstnew(buffer));
+		ctx->map->height++;
+		ft_lstadd_back(&ctx->map->data, ft_lstnew(buffer));
 		buffer = get_next_line(fd);
 	}
-	c->map->width = ft_strlen(c->map->data->content);
-	sl_generate_map_img(c->mlx, c->map);
-	sl_generate_colls(c->colls, c->map);
+	ctx->map->width = ft_strlen(ctx->map->data->content);
+	ctx->map->img = sl_new_img(ctx->mlx,
+			ctx->map->width * SPRITE_SIZE, ctx->map->height * SPRITE_SIZE);
+	sl_loop_map(ctx);
 }

@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/21 19:36:45 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/27 02:25:22 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # define SCREEN_W 640
 # define SCREEN_H 320
+# define SPRITE_SIZE 64
 # define PLAYER_STEP 16
 # define LOOPS_PER_TICK 1000
 
@@ -44,6 +45,14 @@
 #  define KEY_UP 65364
 # endif
 
+typedef struct s_sl_data_addr
+{
+	char	*address;
+	int		pixel_bits;
+	int		size_line;
+	int		endian;
+}	t_sl_data_addr;
+
 typedef struct s_sl_img
 {
 	void	*img;
@@ -59,11 +68,10 @@ typedef struct s_sl_anim
 
 typedef struct s_sl_player
 {
-	t_sl_anim	*s_left;
-	t_sl_anim	*s_right;
-	t_sl_anim	*w_left;
-	t_sl_anim	*w_right;
-	t_sl_anim	*sleep;
+	t_sl_anim	*idle_left;
+	t_sl_anim	*idle_right;
+	t_sl_anim	*walk_left;
+	t_sl_anim	*walk_right;
 	int			x;
 	int			y;
 	int			dir;
@@ -71,10 +79,10 @@ typedef struct s_sl_player
 
 typedef struct s_sl_enemy
 {
-	t_sl_anim	*s_left;
-	t_sl_anim	*s_right;
-	t_sl_anim	*w_left;
-	t_sl_anim	*w_right;
+	t_sl_anim	*idle_left;
+	t_sl_anim	*idle_right;
+	t_sl_anim	*walk_left;
+	t_sl_anim	*walk_right;
 	t_list		*coords;
 }	t_sl_enemy;
 
@@ -109,6 +117,40 @@ typedef struct s_sl_map
 	int			height;
 }	t_sl_map;
 
+typedef struct s_sl_imgs
+{
+	t_sl_img	*plyr_idle_left_1;
+	t_sl_img	*plyr_idle_left_2;
+	t_sl_img	*plyr_idle_right_1;
+	t_sl_img	*plyr_idle_right_2;
+	t_sl_img	*plyr_walk_left_1;
+	t_sl_img	*plyr_walk_left_2;
+	t_sl_img	*plyr_walk_right_1;
+	t_sl_img	*plyr_walk_right_2;
+	t_sl_img	*enem_idle_left_1;
+	t_sl_img	*enem_idle_left_2;
+	t_sl_img	*enem_idle_right_1;
+	t_sl_img	*enem_idle_right_2;
+	t_sl_img	*enem_walk_left_1;
+	t_sl_img	*enem_walk_left_2;
+	t_sl_img	*enem_walk_right_1;
+	t_sl_img	*enem_walk_right_2;
+	t_sl_img	*coll_1;
+	t_sl_img	*coll_2;
+	t_sl_img	*coll_3;
+	t_sl_img	*coll_4;
+	t_sl_img	*exit_open_1;
+	t_sl_img	*exit_open_2;
+	t_sl_img	*exit_open_3;
+	t_sl_img	*exit_open_4;
+	t_sl_img	*exit_closed_1;
+	t_sl_img	*exit_closed_2;
+	t_sl_img	*exit_closed_3;
+	t_sl_img	*exit_closed_4;
+	t_sl_img	*ground;
+	t_sl_img	*wall;
+}	t_sl_imgs;
+
 typedef struct s_sl_context
 {
 	void		*mlx;
@@ -120,29 +162,38 @@ typedef struct s_sl_context
 	t_sl_exit	*exits;
 	t_sl_enemy	*enemies;
 	t_sl_ui		*ui;
+	t_sl_imgs	*imgs;
 }	t_sl_context;
 
-void		sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
-void		sl_parse_map(t_sl_context *c, char *path);
-t_sl_img	*sl_xpm_to_img(void *mlx, char *path);
-t_sl_img	*sl_new_img(void *mlx, int width, int height);
+void			sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
+void			sl_parse_map(t_sl_context *c, char *path);
+t_sl_img		*sl_xpm_to_img(void *mlx, char *path);
+t_sl_img		*sl_new_img(void *mlx, int width, int height);
 
-void		sl_print_context(t_sl_context *c);
+void			sl_print_context(t_sl_context *c);
 
-t_sl_coll	*sl_coll_init(void);
-void		sl_coll_add_coords(t_sl_coll *coll, int x, int y);
-t_sl_img	*sl_coll_get_anim(t_sl_coll *coll);
-int			*sl_coll_get_coords(t_sl_coll *coll, int index);
-void		sl_coll_copy_all(t_sl_img *img, t_sl_context *c);
+t_sl_context	*sl_context_init(void);
 
-t_sl_anim	*sl_anim_init(void);
-void		sl_anim_add_frame(t_sl_anim *anim, t_sl_img *img);
-t_sl_img	*sl_anim_get_frame(t_sl_anim *anim, int index);
+t_sl_coll		*sl_coll_init(void);
+void			sl_coll_add_coords(t_sl_coll *coll, int x, int y);
+t_sl_img		*sl_coll_get_anim(t_sl_coll *coll, int frame);
+int				*sl_coll_get_coords(t_sl_coll *coll, int index);
+void			sl_coll_copy_all(t_sl_img *img, t_sl_context *c);
 
-t_sl_player	*sl_player_init(void);
-t_sl_img	*sl_player_get_anim(t_sl_player *p);
+t_sl_anim		*sl_anim_init(void);
+void			sl_anim_add_frame(t_sl_anim *anim, t_sl_img *img);
+t_sl_img		*sl_anim_get_frame(t_sl_anim *anim, int index);
 
-t_sl_enemy	*sl_enemy_init(void);
-void		sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
+t_sl_exit		*sl_exit_init(void);
+void			sl_exit_add_coords(t_sl_exit *exit, int x, int y);
+
+t_sl_player		*sl_player_init(void);
+void			sl_player_set_coords(t_sl_player *p, int x, int y);
+t_sl_img		*sl_player_get_anim(t_sl_player *p);
+
+t_sl_enemy		*sl_enemy_init(void);
+void			sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
+
+void			sl_load_imgs(t_sl_context *ctx);
 
 #endif

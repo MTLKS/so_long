@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:21:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/19 04:04:39 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/27 02:03:13 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y)
 		j = -y;
 	else
 		j = -1;
-	while (++j < src->height && y+j < des->height)
+	while (++j < src->height && y + j < des->height)
 	{
 		if (x < 0)
 			i = -x;

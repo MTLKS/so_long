@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 23:45:51 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/21 15:01:34 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/27 02:22:25 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,10 @@ t_sl_img	*sl_new_img(void *mlx, int width, int height)
 	res->width = width;
 	res->height = height;
 	return (res);
+}
+
+void	t_sl_img_free(void *mlx, t_sl_img *img)
+{
+	mlx_destroy_image(mlx, img->img);
+	free(img);
 }

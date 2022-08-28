@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:46:43 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/21 16:44:51 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/27 01:31:10 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	sl_print_context(t_sl_context *c)
 	{
 		ft_printf("Player:\nx:%d,y:%d,dir:%d\n",
 			c->player->x, c->player->y, c->player->dir);
-		ft_printf("Player s_left frame count: %d\n", c->player->s_left->frame_count);
-		ft_printf("Player s_right frame count: %d\n", c->player->s_right->frame_count);
+		ft_printf("Player s_left frame count: %d\n", c->player->idle_left->frame_count);
+		ft_printf("Player s_right frame count: %d\n", c->player->idle_right->frame_count);
 	}
 	if (c->colls)
 	{
