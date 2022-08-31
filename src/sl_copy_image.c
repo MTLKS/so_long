@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:21:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/27 02:03:13 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 17:21:38 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y)
 	char	*buffer;
 	char	*buffer2;
 
+	if (des == NULL || src == NULL)
+		return ;
 	buffer = mlx_get_data_addr(src->img, &pixel_bits, &line_bytes, &endian);
 	buffer2 = mlx_get_data_addr(des->img, &pixel_bits, &line_bytes2, &endian);
 	if (y < 0)

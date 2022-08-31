@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/27 02:19:23 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 17:22:58 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ int	sl_key_hook(int keycode, t_sl_player *player)
 	if (keycode == KEY_ESC)
 		exit(0);
 	else if (keycode == KEY_W)
-		player->y -= PLAYER_STEP;
+		ft_lstadd_back(&(player->move_list), ft_lstnew(sl_move_new(MOVE_UP)));
 	else if (keycode == KEY_A)
-		player->x -= PLAYER_STEP;
+		ft_lstadd_back(&(player->move_list), ft_lstnew(sl_move_new(MOVE_LEFT)));
 	else if (keycode == KEY_S)
-		player->y += PLAYER_STEP;
+		ft_lstadd_back(&(player->move_list), ft_lstnew(sl_move_new(MOVE_DOWN)));
 	else if (keycode == KEY_D)
-		player->x += PLAYER_STEP;
+		ft_lstadd_back(&(player->move_list),
+			ft_lstnew(sl_move_new(MOVE_RIGHT)));
 	if (keycode == KEY_A && player->dir == 1)
 		player->dir = 0;
 	else if (keycode == KEY_D && player->dir == 0)
@@ -45,6 +46,8 @@ int	sl_render(t_sl_context *c)
 			(SCREEN_W - SPRITE_SIZE) / 2 - c->player->x,
 			(SCREEN_H - SPRITE_SIZE) / 2 - c->player->y);
 		sl_coll_copy_all(buffer, c);
+		sl_ui_display_moves(c, buffer);
+		sl_move_player(c->player);
 		sl_copy_image(buffer, sl_player_get_anim(c->player),
 			(SCREEN_W - SPRITE_SIZE) / 2, (SCREEN_H - SPRITE_SIZE) / 2);
 		mlx_put_image_to_window(c->mlx, c->win, buffer->img, 0, 0);

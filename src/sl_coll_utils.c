@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:26:44 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/27 02:24:26 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 12:05:44 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,7 @@ void	sl_coll_copy_all(t_sl_img *img, t_sl_context *c)
 	t_list		*buffer;
 	int			*coords;
 
-
-	if (++i >= 10)
-	{
-		i = 0;
-		frame++;
-	}
+	frame = ++i / ANIM_SPEED;
 	buffer = c->colls->coords;
 	while (buffer)
 	{

@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/27 02:25:22 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 17:20:15 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,36 @@
 # include "../libft/includes/libft.h"
 # include <mlx.h>
 
-# define ON_DESTROY 17
-
+/* Game constants
+** SCREEN_W			= Width of screen
+** SCREEN_H			= Height of screen
+** SPRITE_SIZE		= Size of one sprite
+** STEP_SIZE		= Number of steps to move distance of SPRITE_SIZE
+**						SPRITE_SIZE must be divisible by STEP_SIZE.
+** LOOPS_PER_TICK	= The number of loop calls before loop hook runs
+** ANIM_SPEED		= The speed of animation, lower value = faster speed
+*/
 # define SCREEN_W 640
 # define SCREEN_H 320
 # define SPRITE_SIZE 64
-# define PLAYER_STEP 16
+# define STEP_SIZE 4
 # define LOOPS_PER_TICK 1000
+# define MOVE_UP 0
+# define MOVE_DOWN 1
+# define MOVE_LEFT 2
+# define MOVE_RIGHT 3
+# define FACE_LEFT 0
+# define FACE_RIGHT 1
+# ifdef __APPLE__
+#  define ANIM_SPEED 3
+# else
+#  define ANIM_SPEED 10
+# endif
 
+// Event definition
+# define ON_DESTROY 17
+
+// Key definition
 # ifdef __APPLE__
 #  define KEY_A 0
 #  define KEY_S 1
@@ -75,6 +97,8 @@ typedef struct s_sl_player
 	int			x;
 	int			y;
 	int			dir;
+	int			move_count;
+	t_list		*move_list;
 }	t_sl_player;
 
 typedef struct s_sl_enemy
@@ -149,6 +173,10 @@ typedef struct s_sl_imgs
 	t_sl_img	*exit_closed_4;
 	t_sl_img	*ground;
 	t_sl_img	*wall;
+	t_sl_img	*move_up;
+	t_sl_img	*move_down;
+	t_sl_img	*move_left;
+	t_sl_img	*move_right;
 }	t_sl_imgs;
 
 typedef struct s_sl_context
@@ -195,5 +223,11 @@ t_sl_enemy		*sl_enemy_init(void);
 void			sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
 
 void			sl_load_imgs(t_sl_context *ctx);
+
+void			sl_move_player(t_sl_player *player);
+void			*sl_move_new(int new_move);
+
+void			sl_ui_display_moves(t_sl_context *c, t_sl_img *buffer_img);
+t_sl_img		*sl_ui_get_move_img(t_sl_context *c, t_list *move_list);
 
 #endif
