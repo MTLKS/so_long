@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/31 17:22:58 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 18:35:20 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	sl_render(t_sl_context *c)
 			(SCREEN_H - SPRITE_SIZE) / 2 - c->player->y);
 		sl_coll_copy_all(buffer, c);
 		sl_ui_display_moves(c, buffer);
-		sl_move_player(c->player);
+		sl_move_player(c);
 		sl_copy_image(buffer, sl_player_get_anim(c->player),
 			(SCREEN_W - SPRITE_SIZE) / 2, (SCREEN_H - SPRITE_SIZE) / 2);
 		mlx_put_image_to_window(c->mlx, c->win, buffer->img, 0, 0);

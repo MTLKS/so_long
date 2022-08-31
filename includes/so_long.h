@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/31 17:20:15 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 18:35:08 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,10 +224,12 @@ void			sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
 
 void			sl_load_imgs(t_sl_context *ctx);
 
-void			sl_move_player(t_sl_player *player);
+void			sl_move_player(t_sl_context *c);
 void			*sl_move_new(int new_move);
 
 void			sl_ui_display_moves(t_sl_context *c, t_sl_img *buffer_img);
 t_sl_img		*sl_ui_get_move_img(t_sl_context *c, t_list *move_list);
+
+int				sl_is_wall(t_sl_context *c, int x, int y);
 
 #endif

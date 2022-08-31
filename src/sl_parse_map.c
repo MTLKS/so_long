@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/27 02:19:10 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 18:22:33 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@ void	sl_loop_map(t_sl_context *ctx)
 	}
 }
 
+static void	*sl_map_data_new(char *str)
+{
+	void	*buffer;
+
+	buffer = malloc((ft_strlen(str) + 1) * sizeof(char));
+	ft_memcpy(buffer, str, ft_strlen(str) + 1);
+	return (buffer);
+}
+
 void	sl_parse_map(t_sl_context *ctx, char *path)
 {
 	int		fd;
@@ -68,7 +77,7 @@ void	sl_parse_map(t_sl_context *ctx, char *path)
 	while (buffer)
 	{
 		ctx->map->height++;
-		ft_lstadd_back(&ctx->map->data, ft_lstnew(buffer));
+		ft_lstadd_back(&ctx->map->data, ft_lstnew(sl_map_data_new(buffer)));
 		buffer = get_next_line(fd);
 	}
 	ctx->map->width = ft_strlen(ctx->map->data->content);

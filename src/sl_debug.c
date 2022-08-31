@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:46:43 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/27 01:31:10 by maliew           ###   ########.fr       */
+/*   Updated: 2022/08/31 18:28:15 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,5 @@ void	sl_print_context(t_sl_context *c)
 		}
 		ft_printf("\n");
 	}
+	ft_printf("Is wall: %d\n", sl_is_wall(c, c->player->x, c->player->y));
 }
