@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:10:32 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/27 02:25:14 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/03 16:24:48 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,4 @@ t_sl_context	*sl_context_init(void)
 	ctx->enemies = sl_enemy_init();
 	ctx->scene = sl_new_img(ctx->mlx, SCREEN_W, SCREEN_H);
 	return (ctx);
-}
-
-void	sl_context_free(t_sl_context *ctx)
-{
-	(void)ctx;
-	return ;
 }

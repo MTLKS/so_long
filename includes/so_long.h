@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/03 01:49:21 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/03 17:23:12 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define SCREEN_W 1280
 # define SCREEN_H 720
 # define SPRITE_SIZE 64
-# define STEP_SIZE 8
+# define STEP_SIZE 4
 # define MOVE_UP 0
 # define MOVE_DOWN 1
 # define MOVE_LEFT 2
@@ -35,8 +35,8 @@
 # define FACE_LEFT 0
 # define FACE_RIGHT 1
 # ifdef __APPLE__
-#  define ANIM_SPEED 3
-#  define LOOPS_PER_TICK 1000
+#  define ANIM_SPEED 5
+#  define LOOPS_PER_TICK 500
 # else
 #  define ANIM_SPEED 5
 #  define LOOPS_PER_TICK 5000
@@ -194,7 +194,7 @@ typedef struct s_sl_context
 	t_sl_imgs	*imgs;
 }	t_sl_context;
 
-int				sl_close(t_sl_context *context);
+int				sl_close(void);
 
 void			sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
 void			sl_parse_map(t_sl_context *c, char *path);
@@ -228,6 +228,7 @@ t_sl_enemy		*sl_enemy_init(void);
 void			sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
 
 void			sl_load_imgs(t_sl_context *ctx);
+void			sl_load_anims(t_sl_context *ctx);
 
 void			sl_move_player(t_sl_context *c);
 void			*sl_move_new(int new_move);

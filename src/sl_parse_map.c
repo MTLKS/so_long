@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/02 00:27:52 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/03 17:48:40 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ void	sl_parse_character(t_sl_context *ctx, char c, int x, int y)
 	else if (ft_strchr("CENP0", c))
 		sl_copy_image(ctx->map->img, ctx->imgs->ground,
 			x * SPRITE_SIZE, y * SPRITE_SIZE);
+	else if (c != '\n')
+	{
+		ft_printf("Map Error: Unknown Key '%c' at Ln %d, Col %d.\n",
+			c, x + 1, y + 1);
+		sl_close();
+	}
 }
 
 void	sl_loop_map(t_sl_context *ctx)
@@ -55,6 +61,18 @@ void	sl_loop_map(t_sl_context *ctx)
 	}
 }
 
+static void	sl_check_map(t_sl_context *ctx)
+{
+	t_list	*buffer;
+	int		i;
+
+	buffer = ctx->map->data->content;
+	while (buffer)
+	{
+
+	}
+}
+
 static void	*sl_map_data_new(char *str)
 {
 	void	*buffer;
@@ -67,6 +85,7 @@ static void	*sl_map_data_new(char *str)
 void	sl_parse_map(t_sl_context *ctx, char *path)
 {
 	int		fd;
+	int		len;
 	char	*buffer;
 
 	fd = open(path, O_RDONLY);
@@ -74,11 +93,14 @@ void	sl_parse_map(t_sl_context *ctx, char *path)
 		// send error
 	sl_init_map(&ctx->map);
 	buffer = get_next_line(fd);
+	len = ft_strlen(buffer);
 	while (buffer)
 	{
 		ctx->map->height++;
 		ft_lstadd_back(&ctx->map->data, ft_lstnew(sl_map_data_new(buffer)));
+		free(buffer);
 		buffer = get_next_line(fd);
+
 	}
 	ctx->map->width = ft_strlen(ctx->map->data->content);
 	ctx->map->img = sl_new_img(ctx->mlx,

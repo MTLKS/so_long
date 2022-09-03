@@ -6,25 +6,28 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/03 01:51:26 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/03 17:38:05 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 #include <stdio.h>
 
-int	sl_key_hook(int keycode, t_sl_player *player)
+int	sl_key_hook(int keycode, t_sl_context *ctx)
 {
 	if (keycode == KEY_ESC)
-		exit(0);
+		sl_close();
 	else if (keycode == KEY_W)
-		ft_lstadd_back(&(player->move_list), ft_lstnew(sl_move_new(MOVE_UP)));
+		ft_lstadd_back(&(ctx->player->move_list),
+			ft_lstnew(sl_move_new(MOVE_UP)));
 	else if (keycode == KEY_A)
-		ft_lstadd_back(&(player->move_list), ft_lstnew(sl_move_new(MOVE_LEFT)));
+		ft_lstadd_back(&(ctx->player->move_list),
+			ft_lstnew(sl_move_new(MOVE_LEFT)));
 	else if (keycode == KEY_S)
-		ft_lstadd_back(&(player->move_list), ft_lstnew(sl_move_new(MOVE_DOWN)));
+		ft_lstadd_back(&(ctx->player->move_list),
+			ft_lstnew(sl_move_new(MOVE_DOWN)));
 	else if (keycode == KEY_D)
-		ft_lstadd_back(&(player->move_list),
+		ft_lstadd_back(&(ctx->player->move_list),
 			ft_lstnew(sl_move_new(MOVE_RIGHT)));
 	return (0);
 }
@@ -58,9 +61,8 @@ int	sl_render(t_sl_context *c)
 	return (0);
 }
 
-int	sl_close(t_sl_context *context)
+int	sl_close(void)
 {
-	mlx_destroy_window(context->mlx, context->win);
 	exit(0);
 }
 
@@ -72,35 +74,11 @@ int	main(int argc, char **argv)
 		return (0);
 	ft_printf("Hello World!\n");
 	ctx = sl_context_init();
-	// ctx = (t_sl_context *)malloc(sizeof(t_sl_context));
-	// ctx->mlx = mlx_init();
-	// ctx->win = mlx_new_window(ctx->mlx, SCREEN_W, SCREEN_H, "so_long");
 	sl_load_imgs(ctx);
-	// ctx->player = sl_player_init();
-	sl_anim_add_frame(ctx->player->idle_right, ctx->imgs->plyr_idle_right_1);
-	sl_anim_add_frame(ctx->player->idle_right, ctx->imgs->plyr_idle_right_2);
-	sl_anim_add_frame(ctx->player->idle_left, ctx->imgs->plyr_idle_left_1);
-	sl_anim_add_frame(ctx->player->idle_left, ctx->imgs->plyr_idle_left_2);
-	sl_anim_add_frame(ctx->player->walk_right, ctx->imgs->plyr_idle_right_1);
-	sl_anim_add_frame(ctx->player->walk_right, ctx->imgs->plyr_walk_right_1);
-	sl_anim_add_frame(ctx->player->walk_right, ctx->imgs->plyr_idle_right_1);
-	sl_anim_add_frame(ctx->player->walk_right, ctx->imgs->plyr_walk_right_2);
-	sl_anim_add_frame(ctx->player->walk_left, ctx->imgs->plyr_idle_left_1);
-	sl_anim_add_frame(ctx->player->walk_left, ctx->imgs->plyr_walk_left_1);
-	sl_anim_add_frame(ctx->player->walk_left, ctx->imgs->plyr_idle_left_1);
-	sl_anim_add_frame(ctx->player->walk_left, ctx->imgs->plyr_walk_left_2);
-	sl_anim_add_frame(ctx->exits->closed, ctx->imgs->exit_closed_1);
-	sl_anim_add_frame(ctx->exits->closed, ctx->imgs->exit_closed_2);
-	sl_anim_add_frame(ctx->exits->closed, ctx->imgs->exit_closed_3);
-	sl_anim_add_frame(ctx->exits->closed, ctx->imgs->exit_closed_4);
-	sl_anim_add_frame(ctx->exits->open, ctx->imgs->exit_open_1);
-	// ctx->scene = sl_new_img(ctx->mlx, SCREEN_W, SCREEN_H);
-	// ctx->colls = sl_coll_init();
-	sl_anim_add_frame(ctx->colls->anim, ctx->imgs->coll_1);
-	sl_anim_add_frame(ctx->colls->anim, ctx->imgs->coll_2);
+	sl_load_anims(ctx);
 	sl_parse_map(ctx, argv[1]);
 	mlx_loop_hook(ctx->mlx, sl_render, ctx);
-	mlx_key_hook(ctx->win, sl_key_hook, ctx->player);
-	mlx_hook(ctx->win, ON_DESTROY, 0L, sl_close, ctx);
+	mlx_key_hook(ctx->win, sl_key_hook, ctx);
+	mlx_hook(ctx->win, ON_DESTROY, 0L, sl_close, NULL);
 	mlx_loop(ctx->mlx);
 }
