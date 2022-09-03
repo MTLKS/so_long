@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/31 18:35:08 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/03 01:49:21 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@
 ** LOOPS_PER_TICK	= The number of loop calls before loop hook runs
 ** ANIM_SPEED		= The speed of animation, lower value = faster speed
 */
-# define SCREEN_W 640
-# define SCREEN_H 320
+# define SCREEN_W 1280
+# define SCREEN_H 720
 # define SPRITE_SIZE 64
-# define STEP_SIZE 4
-# define LOOPS_PER_TICK 1000
+# define STEP_SIZE 8
 # define MOVE_UP 0
 # define MOVE_DOWN 1
 # define MOVE_LEFT 2
@@ -37,8 +36,10 @@
 # define FACE_RIGHT 1
 # ifdef __APPLE__
 #  define ANIM_SPEED 3
+#  define LOOPS_PER_TICK 1000
 # else
-#  define ANIM_SPEED 10
+#  define ANIM_SPEED 5
+#  define LOOPS_PER_TICK 5000
 # endif
 
 // Event definition
@@ -193,6 +194,8 @@ typedef struct s_sl_context
 	t_sl_imgs	*imgs;
 }	t_sl_context;
 
+int				sl_close(t_sl_context *context);
+
 void			sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
 void			sl_parse_map(t_sl_context *c, char *path);
 t_sl_img		*sl_xpm_to_img(void *mlx, char *path);
@@ -204,9 +207,9 @@ t_sl_context	*sl_context_init(void);
 
 t_sl_coll		*sl_coll_init(void);
 void			sl_coll_add_coords(t_sl_coll *coll, int x, int y);
-t_sl_img		*sl_coll_get_anim(t_sl_coll *coll, int frame);
 int				*sl_coll_get_coords(t_sl_coll *coll, int index);
 void			sl_coll_copy_all(t_sl_img *img, t_sl_context *c);
+void			sl_coll_check(t_sl_context *c);
 
 t_sl_anim		*sl_anim_init(void);
 void			sl_anim_add_frame(t_sl_anim *anim, t_sl_img *img);
@@ -214,6 +217,8 @@ t_sl_img		*sl_anim_get_frame(t_sl_anim *anim, int index);
 
 t_sl_exit		*sl_exit_init(void);
 void			sl_exit_add_coords(t_sl_exit *exit, int x, int y);
+void			sl_exit_copy_all(t_sl_img *img, t_sl_context *c);
+void			sl_exit_check(t_sl_context *c);
 
 t_sl_player		*sl_player_init(void);
 void			sl_player_set_coords(t_sl_player *p, int x, int y);

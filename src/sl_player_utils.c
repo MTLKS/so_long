@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:14 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/31 17:22:27 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/01 01:45:16 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,16 @@ t_sl_img	*sl_player_get_anim(t_sl_player *p)
 	static int	frame = 0;
 
 	frame = ++i / ANIM_SPEED;
-	if (p->dir)
+	if (p->dir && !p->move_list)
 		return (sl_anim_get_frame(p->idle_right,
 				frame % p->idle_right->frame_count));
-	else
+	else if (!p->dir && !p->move_list)
 		return (sl_anim_get_frame(p->idle_left,
 				frame % p->idle_left->frame_count));
+	else if (p->dir)
+		return (sl_anim_get_frame(p->walk_right,
+				frame % p->walk_right->frame_count));
+	else
+		return (sl_anim_get_frame(p->walk_left,
+				frame % p->walk_left->frame_count));
 }

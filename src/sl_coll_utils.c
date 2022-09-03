@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:26:44 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/31 17:35:44 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/02 20:00:24 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ void	sl_coll_add_coords(t_sl_coll *coll, int x, int y)
 	arr[0] = x;
 	arr[1] = y;
 	ft_lstadd_back(&coll->coords, ft_lstnew(arr));
-}
-
-t_sl_img	*sl_coll_get_anim(t_sl_coll *coll, int frame)
-{
-	return (sl_anim_get_frame(coll->anim, frame % coll->anim->frame_count));
 }
 
 int	*sl_coll_get_coords(t_sl_coll *coll, int index)
@@ -62,9 +57,38 @@ void	sl_coll_copy_all(t_sl_img *img, t_sl_context *c)
 	{
 		coords = (int *)buffer->content;
 		sl_copy_image(img,
-			sl_coll_get_anim(c->colls, frame),
+			sl_anim_get_frame(c->colls->anim,
+				frame % c->colls->anim->frame_count),
 			(SCREEN_W - SPRITE_SIZE) / 2 -(c->player->x) + coords[0],
 			(SCREEN_H - SPRITE_SIZE) / 2 -(c->player->y) + coords[1]);
+		buffer = buffer->next;
+	}
+}
+
+void	sl_coll_check(t_sl_context *c)
+{
+	t_list	*prev;
+	t_list	*buffer;
+	t_list	*temp;
+	int		*coords;
+
+	prev = NULL;
+	buffer = c->colls->coords;
+	while (buffer)
+	{
+		coords = (int *)buffer->content;
+		if (c->player->x == coords[0] && c->player->y == coords[1])
+		{
+			if (prev == NULL)
+				c->colls->coords = buffer->next;
+			else
+				prev->next = buffer->next;
+			temp = buffer;
+			free(temp->content);
+			free(temp);
+			return ;
+		}
+		prev = buffer;
 		buffer = buffer->next;
 	}
 }
