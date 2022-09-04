@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:42:53 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/03 16:24:45 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/04 14:58:55 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,10 @@ t_sl_img	*sl_anim_get_frame(t_sl_anim *anim, int index)
 	while (++i < index && buffer)
 		buffer = buffer->next;
 	return ((t_sl_img *)buffer->content);
+}
+
+void	sl_anim_free(t_sl_anim *anim)
+{
+	ft_lstclear(&anim->frames, &sl_no_free_content);
+	free(anim);
 }

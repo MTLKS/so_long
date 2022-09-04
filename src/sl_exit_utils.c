@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:07 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/03 17:37:43 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/04 14:59:13 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,15 @@ void	sl_exit_check(t_sl_context *c)
 		coords = (int *)buffer->content;
 		if (c->player->x == coords[0] && c->player->y == coords[1]
 			&& ft_lstsize(c->colls->coords) == 0)
-			sl_close();
+			sl_close(c);
 		buffer = buffer->next;
 	}
+}
+
+void	sl_exit_free(t_sl_exit *exit)
+{
+	sl_anim_free(exit->open);
+	sl_anim_free(exit->closed);
+	ft_lstclear(&exit->coords, &sl_free_content);
+	free(exit);
 }

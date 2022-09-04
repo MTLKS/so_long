@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/03 17:48:40 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/04 14:59:57 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	sl_parse_character(t_sl_context *ctx, char c, int x, int y)
 	{
 		ft_printf("Map Error: Unknown Key '%c' at Ln %d, Col %d.\n",
 			c, x + 1, y + 1);
-		sl_close();
+		sl_close(ctx);
 	}
 }
 
@@ -61,17 +61,17 @@ void	sl_loop_map(t_sl_context *ctx)
 	}
 }
 
-static void	sl_check_map(t_sl_context *ctx)
-{
-	t_list	*buffer;
-	int		i;
+// static void	sl_check_map(t_sl_context *ctx)
+// {
+// 	t_list	*buffer;
+// 	int		i;
 
-	buffer = ctx->map->data->content;
-	while (buffer)
-	{
+// 	buffer = ctx->map->data->content;
+// 	while (buffer)
+// 	{
 
-	}
-}
+// 	}
+// }
 
 static void	*sl_map_data_new(char *str)
 {

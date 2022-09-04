@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:15:48 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/02 01:06:13 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/04 15:23:08 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ static void	sl_load_imgs3(t_sl_imgs *imgs, void *mlx)
 	imgs->plyr_walk_right_2 = sl_xpm_to_img(mlx,
 			"./assets/sprites/cat_w_right2.xpm");
 }
+
+// void	sl_load_img(t_sl_imgs **imgs, char *key, t_sl_img *img)
+// {
+// 	t_sl_imgs	*new_img;
+
+// 	new_img->key = ft_strdup(key);
+// 	new_img->img = img;
+// 	new_img->next = *imgs;
+// 	*imgs = new_img;
+// }
 
 void	sl_load_imgs(t_sl_context *ctx)
 {
