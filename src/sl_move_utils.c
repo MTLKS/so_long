@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 12:13:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/09 02:43:38 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 15:29:09 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ void	*sl_move_new(int new_move)
 	move = malloc(sizeof(int));
 	*(int *)move = new_move;
 	return (move);
-}
-
-static void	sl_move_delete(void *content)
-{
-	free(content);
 }
 
 static void	sl_move_player_step(t_sl_context *c)
@@ -63,7 +58,7 @@ void	sl_move_player(t_sl_context *c)
 		{
 			temp = c->player->move_list;
 			c->player->move_list = c->player->move_list->next;
-			ft_lstdelone(temp, &sl_move_delete);
+			ft_lstdelone(temp, &sl_free_content);
 			c->move_count++;
 			ft_printf("Movement count: %d\n", c->move_count);
 		}

@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/09 02:55:52 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 15:32:19 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	sl_close(t_sl_context *ctx)
 {
 	sl_context_free(ctx);
 	ft_printf("Exiting so_long...\n");
+	// system("leaks -q so_long");
 	exit(0);
 }
 

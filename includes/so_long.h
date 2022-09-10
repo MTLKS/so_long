@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 17:41:35 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:09:51 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,24 @@
 #  define KEY_DOWN 65362
 #  define KEY_UP 65364
 # endif
+
+typedef struct s_sl_astar_node
+{
+	int	x;
+	int	y;
+	int	g_cost;
+	int	total_cost;
+	int	last_move;
+}	t_sl_astar_node;
+
+typedef struct s_sl_pathfind
+{
+	int		sx;
+	int		sy;
+	int		ex;
+	int		ey;
+	t_list	*moves;
+}	t_sl_pathfind;
 
 typedef struct s_sl_data_addr
 {
@@ -235,5 +253,9 @@ void			sl_check_missing_key(t_sl_context *ctx);
 
 void			sl_free_content(void *content);
 void			sl_no_free_content(void *content);
+
+int				sl_abs(int n);
+
+int				sl_astar_h_cost(int x, int y, int ex, int ey);
 
 #endif

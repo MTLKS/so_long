@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:10:32 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/09 02:40:13 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 15:32:01 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_sl_context	*sl_context_init(void)
 
 void	sl_context_free(t_sl_context *ctx)
 {
+	(void)ctx;
 	sl_img_free(ctx->scene, ctx->mlx);
 	sl_map_free(ctx->map, ctx->mlx);
 	sl_player_free(ctx->player);
@@ -40,6 +41,4 @@ void	sl_context_free(t_sl_context *ctx)
 	sl_imgs_free(ctx->imgs, ctx->mlx);
 	if (ctx->win)
 		mlx_destroy_window(ctx->mlx, ctx->win);
-	free(ctx->mlx);
-	free(ctx);
 }
