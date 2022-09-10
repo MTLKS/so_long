@@ -1,5 +1,5 @@
 /* XPM */
-static char * popcorn2_xpm[] = {
+static char * popcorn3_xpm[] = {
 "64 64 7 1",
 " 	c #000000",
 ".	c #E8BF46",
@@ -8,6 +8,11 @@ static char * popcorn2_xpm[] = {
 "#	c #980000",
 "$	c #D9D9D9",
 "%	c #BFBFBF",
+"                                                                ",
+"                                                                ",
+"                                                                ",
+"                                                                ",
+"                                                                ",
 "                                                                ",
 "                                                                ",
 "                                                                ",
@@ -55,11 +60,6 @@ static char * popcorn2_xpm[] = {
 "                         @@@@@@######                           ",
 "                           @@@@####                             ",
 "                             @@##                               ",
-"                                                                ",
-"                                                                ",
-"                                                                ",
-"                                                                ",
-"                                                                ",
 "                                                                ",
 "                                                                ",
 "                                                                ",
