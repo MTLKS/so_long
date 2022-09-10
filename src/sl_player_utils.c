@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:14 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/04 14:52:36 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/08 02:49:08 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,17 @@ t_sl_player	*sl_player_init(void)
 	return (player);
 }
 
-void	sl_player_set_coords(t_sl_player *p, int x, int y)
+void	sl_player_set_coords(t_sl_context *ctx, int x, int y)
 {
-	p->x = x;
-	p->y = y;
+	if (ctx->player->x != 0 || ctx->player->y != 0)
+	{
+		ft_printf("Error: Double key 'P' at [%d,%d] and [%d,%d].\n",
+			ctx->player->y / SPRITE_SIZE + 1, ctx->player->x / SPRITE_SIZE + 1,
+			x / SPRITE_SIZE + 1, y / SPRITE_SIZE + 1);
+		sl_close(ctx);
+	}
+	ctx->player->x = x;
+	ctx->player->y = y;
 }
 
 t_sl_img	*sl_player_get_anim(t_sl_player *p)

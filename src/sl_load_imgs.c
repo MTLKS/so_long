@@ -6,71 +6,53 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:15:48 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/04 15:23:08 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 11:38:53 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void	sl_load_imgs1(t_sl_imgs *imgs, void *mlx)
+static void	sl_load_imgs1(t_sl_context *ctx)
 {
-	imgs->ground = sl_xpm_to_img(mlx, "./assets/sprites/ground.xpm");
-	imgs->wall = sl_xpm_to_img(mlx, "./assets/sprites/wall.xpm");
-	imgs->coll_1 = sl_xpm_to_img(mlx, "./assets/sprites/popcorn.xpm");
-	imgs->coll_2 = sl_xpm_to_img(mlx, "./assets/sprites/popcorn2.xpm");
-	imgs->exit_closed_1 = sl_xpm_to_img(mlx,
-			"./assets/sprites/exit_closed1.xpm");
-	imgs->exit_closed_2 = sl_xpm_to_img(mlx,
-			"./assets/sprites/exit_closed2.xpm");
-	imgs->exit_closed_3 = sl_xpm_to_img(mlx,
-			"./assets/sprites/exit_closed3.xpm");
-	imgs->exit_closed_4 = sl_xpm_to_img(mlx,
-			"./assets/sprites/exit_closed4.xpm");
-	imgs->exit_open_1 = sl_xpm_to_img(mlx, "./assets/sprites/exit_open1.xpm");
+	sl_add_imgs(ctx, "ground", "./assets/sprites/ground.xpm");
+	sl_add_imgs(ctx, "wall", "./assets/sprites/wall.xpm");
+	sl_add_imgs(ctx, "coll_1", "./assets/sprites/popcorn.xpm");
+	sl_add_imgs(ctx, "coll_2", "./assets/sprites/popcorn2.xpm");
+	sl_add_imgs(ctx, "coll_3", "./assets/sprites/popcorn3.xpm");
+	sl_add_imgs(ctx, "exit_closed_1", "./assets/sprites/exit_closed1.xpm");
+	sl_add_imgs(ctx, "exit_closed_2", "./assets/sprites/exit_closed2.xpm");
+	sl_add_imgs(ctx, "exit_closed_3", "./assets/sprites/exit_closed3.xpm");
+	sl_add_imgs(ctx, "exit_closed_4", "./assets/sprites/exit_closed4.xpm");
+	sl_add_imgs(ctx, "exit_open_1", "./assets/sprites/exit_open1.xpm");
+	sl_add_imgs(ctx, "exit_open_2", "./assets/sprites/exit_open2.xpm");
+	sl_add_imgs(ctx, "exit_open_3", "./assets/sprites/exit_open3.xpm");
+	sl_add_imgs(ctx, "exit_open_4", "./assets/sprites/exit_open4.xpm");
 }
 
-static void	sl_load_imgs2(t_sl_imgs *imgs, void *mlx)
+static void	sl_load_imgs2(t_sl_context *ctx)
 {
-	imgs->move_up = sl_xpm_to_img(mlx, "./assets/sprites/up.xpm");
-	imgs->move_down = sl_xpm_to_img(mlx, "./assets/sprites/down.xpm");
-	imgs->move_left = sl_xpm_to_img(mlx, "./assets/sprites/left.xpm");
-	imgs->move_right = sl_xpm_to_img(mlx, "./assets/sprites/right.xpm");
+	sl_add_imgs(ctx, "move_up", "./assets/sprites/move_up.xpm");
+	sl_add_imgs(ctx, "move_down", "./assets/sprites/move_down.xpm");
+	sl_add_imgs(ctx, "move_left", "./assets/sprites/move_left.xpm");
+	sl_add_imgs(ctx, "move_right", "./assets/sprites/move_right.xpm");
 }
 
-static void	sl_load_imgs3(t_sl_imgs *imgs, void *mlx)
+static void	sl_load_imgs3(t_sl_context *ctx)
 {
-	imgs->plyr_idle_left_1 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_s_left.xpm");
-	imgs->plyr_idle_left_2 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_s_left2.xpm");
-	imgs->plyr_idle_right_1 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_s_right.xpm");
-	imgs->plyr_idle_right_2 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_s_right2.xpm");
-	imgs->plyr_walk_left_1 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_w_left1.xpm");
-	imgs->plyr_walk_left_2 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_w_left2.xpm");
-	imgs->plyr_walk_right_1 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_w_right1.xpm");
-	imgs->plyr_walk_right_2 = sl_xpm_to_img(mlx,
-			"./assets/sprites/cat_w_right2.xpm");
+	sl_add_imgs(ctx, "plyr_idle_left_1", "./assets/sprites/cat_s_left.xpm");
+	sl_add_imgs(ctx, "plyr_idle_left_2", "./assets/sprites/cat_s_left2.xpm");
+	sl_add_imgs(ctx, "plyr_idle_right_1", "./assets/sprites/cat_s_right.xpm");
+	sl_add_imgs(ctx, "plyr_idle_right_2", "./assets/sprites/cat_s_right2.xpm");
+	sl_add_imgs(ctx, "plyr_walk_left_1", "./assets/sprites/cat_w_left1.xpm");
+	sl_add_imgs(ctx, "plyr_walk_left_2", "./assets/sprites/cat_w_left2.xpm");
+	sl_add_imgs(ctx, "plyr_walk_right_1", "./assets/sprites/cat_w_right1.xpm");
+	sl_add_imgs(ctx, "plyr_walk_right_2", "./assets/sprites/cat_w_right2.xpm");
 }
-
-// void	sl_load_img(t_sl_imgs **imgs, char *key, t_sl_img *img)
-// {
-// 	t_sl_imgs	*new_img;
-
-// 	new_img->key = ft_strdup(key);
-// 	new_img->img = img;
-// 	new_img->next = *imgs;
-// 	*imgs = new_img;
-// }
 
 void	sl_load_imgs(t_sl_context *ctx)
 {
-	ctx->imgs = (t_sl_imgs *)malloc(sizeof(t_sl_imgs));
-	sl_load_imgs1(ctx->imgs, ctx->mlx);
-	sl_load_imgs2(ctx->imgs, ctx->mlx);
-	sl_load_imgs3(ctx->imgs, ctx->mlx);
+	ctx->imgs = NULL;
+	sl_load_imgs1(ctx);
+	sl_load_imgs2(ctx);
+	sl_load_imgs3(ctx);
 }

@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 18:46:43 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/02 01:09:07 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/08 02:01:22 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,9 @@ void	sl_print_context(t_sl_context *c)
 		ft_printf("\n");
 	}
 	ft_printf("Exits: ");
-	if (c->exits)
+	if (c->exit)
 	{
-		buffer = c->exits->coords;
-		while (buffer)
-		{
-			ft_printf("[%d,%d], ", ((int *)buffer->content)[0], ((int *)buffer->content)[1]);
-			buffer = buffer->next;
-		}
-		ft_printf("\n");
+		ft_printf("[%d,%d]\n", c->exit->x, c->exit->y);
 	}
 	ft_printf("Is wall: %d\n", sl_is_wall(c, c->player->x, c->player->y));
 }

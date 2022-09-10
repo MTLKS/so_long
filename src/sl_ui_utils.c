@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:07:02 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/31 17:23:59 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/08 00:49:31 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ t_sl_img	*sl_ui_get_move_img(t_sl_context *c, t_list *move_list)
 	img = NULL;
 	move = *(int *)move_list->content;
 	if (move == MOVE_UP)
-		img = c->imgs->move_up;
+		img = sl_get_imgs(c->imgs, "move_up");
 	else if (move == MOVE_DOWN)
-		img = c->imgs->move_down;
+		img = sl_get_imgs(c->imgs, "move_down");
 	else if (move == MOVE_LEFT)
-		img = c->imgs->move_left;
+		img = sl_get_imgs(c->imgs, "move_left");
 	else if (move == MOVE_RIGHT)
-		img = c->imgs->move_right;
+		img = sl_get_imgs(c->imgs, "move_right");
 	return (img);
 }
 

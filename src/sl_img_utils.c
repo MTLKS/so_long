@@ -6,18 +6,23 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 23:45:51 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/04 14:47:21 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/08 04:03:58 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_sl_img	*sl_xpm_to_img(void *mlx, char *path)
+t_sl_img	*sl_xpm_to_img(t_sl_context *ctx, char *path)
 {
 	t_sl_img	*res;
 
 	res = (t_sl_img *)malloc(sizeof(t_sl_img));
-	res->img = mlx_xpm_file_to_image(mlx, path, &res->width, &res->height);
+	res->img = mlx_xpm_file_to_image(ctx->mlx, path, &res->width, &res->height);
+	if (res->img == NULL)
+	{
+		ft_printf("Error: Missing asset '%s'.\n", path);
+		sl_close(ctx);
+	}
 	return (res);
 }
 

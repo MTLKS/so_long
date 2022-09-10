@@ -6,44 +6,42 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/04 14:59:57 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 11:46:21 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	sl_init_map(t_sl_map **map)
+void	sl_parse_map_image(t_sl_context *ctx, char c, int x, int y)
 {
-	*map = (t_sl_map *)malloc(sizeof(t_sl_map));
-	(*map)->data = NULL;
-	(*map)->img = NULL;
-	(*map)->width = 0;
-	(*map)->height = 0;
+	if (c == '1')
+		sl_copy_image(ctx->map->img, sl_get_imgs(ctx->imgs, "wall"),
+			x * SPRITE_SIZE, y * SPRITE_SIZE);
+	else if (ft_strchr("CENP0", c))
+		sl_copy_image(ctx->map->img, sl_get_imgs(ctx->imgs, "ground"),
+			x * SPRITE_SIZE, y * SPRITE_SIZE);
 }
 
 void	sl_parse_character(t_sl_context *ctx, char c, int x, int y)
 {
+	if (!ft_strchr("CENP01\n", c))
+	{
+		ft_printf("Error: Unknown Key '%c' at Ln %d, Col %d.\n",
+			c, y + 1, x + 1);
+		sl_close(ctx);
+	}
 	if (c == 'P')
-		sl_player_set_coords(ctx->player, x * SPRITE_SIZE, y * SPRITE_SIZE);
+		sl_player_set_coords(ctx, x * SPRITE_SIZE, y * SPRITE_SIZE);
 	else if (c == 'C')
 		sl_coll_add_coords(ctx->colls, x * SPRITE_SIZE, y * SPRITE_SIZE);
 	else if (c == 'E')
-		sl_exit_add_coords(ctx->exits, x * SPRITE_SIZE, y * SPRITE_SIZE);
-	if (c == '1')
-		sl_copy_image(ctx->map->img, ctx->imgs->wall,
-			x * SPRITE_SIZE, y * SPRITE_SIZE);
-	else if (ft_strchr("CENP0", c))
-		sl_copy_image(ctx->map->img, ctx->imgs->ground,
-			x * SPRITE_SIZE, y * SPRITE_SIZE);
-	else if (c != '\n')
-	{
-		ft_printf("Map Error: Unknown Key '%c' at Ln %d, Col %d.\n",
-			c, x + 1, y + 1);
-		sl_close(ctx);
-	}
+		sl_exit_set_coords(ctx, x * SPRITE_SIZE, y * SPRITE_SIZE);
+	else if (c == 'N')
+		sl_enemy_add_coords(ctx->enemies, x * SPRITE_SIZE, y * SPRITE_SIZE, 0);
 }
 
-void	sl_loop_map(t_sl_context *ctx)
+void	sl_loop_map(t_sl_context *ctx,
+	void (*f)(t_sl_context *ctx, char c, int x, int y))
 {
 	t_list	*buffer;
 	int		x;
@@ -55,31 +53,31 @@ void	sl_loop_map(t_sl_context *ctx)
 	{
 		x = -1;
 		while (((char *)buffer->content)[++x])
-			sl_parse_character(ctx, ((char *)buffer->content)[x], x, y);
+			f(ctx, ((char *)buffer->content)[x], x, y);
 		buffer = buffer->next;
 		y++;
 	}
 }
 
-// static void	sl_check_map(t_sl_context *ctx)
-// {
-// 	t_list	*buffer;
-// 	int		i;
-
-// 	buffer = ctx->map->data->content;
-// 	while (buffer)
-// 	{
-
-// 	}
-// }
-
-static void	*sl_map_data_new(char *str)
+static int	sl_open_map_fd(t_sl_context *ctx, char *path)
 {
-	void	*buffer;
+	char	*temp;
+	int		fd;
 
-	buffer = malloc((ft_strlen(str) + 1) * sizeof(char));
-	ft_memcpy(buffer, str, ft_strlen(str) + 1);
-	return (buffer);
+	temp = ft_substr(path, ft_strlen(path) - 4, 4);
+	if (ft_strncmp(temp, ".ber", 4) != 0)
+	{
+		ft_printf("Error: Wrong file extension '%s'.\n", path);
+		sl_close(ctx);
+	}
+	free(temp);
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+	{
+		ft_printf("Error: Cannot read file '%s'.\n", path);
+		sl_close(ctx);
+	}
+	return (fd);
 }
 
 void	sl_parse_map(t_sl_context *ctx, char *path)
@@ -88,10 +86,9 @@ void	sl_parse_map(t_sl_context *ctx, char *path)
 	int		len;
 	char	*buffer;
 
-	fd = open(path, O_RDONLY);
-	// if (fd == -1)
-		// send error
+	(void)len;
 	sl_init_map(&ctx->map);
+	fd = sl_open_map_fd(ctx, path);
 	buffer = get_next_line(fd);
 	len = ft_strlen(buffer);
 	while (buffer)
@@ -100,10 +97,12 @@ void	sl_parse_map(t_sl_context *ctx, char *path)
 		ft_lstadd_back(&ctx->map->data, ft_lstnew(sl_map_data_new(buffer)));
 		free(buffer);
 		buffer = get_next_line(fd);
-
 	}
-	ctx->map->width = ft_strlen(ctx->map->data->content);
+	close(fd);
+	ctx->map->width = ft_strlen(ctx->map->data->content) - 1;
 	ctx->map->img = sl_new_img(ctx->mlx,
 			ctx->map->width * SPRITE_SIZE, ctx->map->height * SPRITE_SIZE);
-	sl_loop_map(ctx);
+	sl_loop_map(ctx, &sl_parse_character);
+	sl_check_map(ctx);
+	sl_check_missing_key(ctx);
 }

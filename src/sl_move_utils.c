@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 12:13:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/02 00:27:44 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/09 02:43:38 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	sl_move_player(t_sl_context *c)
 			temp = c->player->move_list;
 			c->player->move_list = c->player->move_list->next;
 			ft_lstdelone(temp, &sl_move_delete);
+			c->move_count++;
+			ft_printf("Movement count: %d\n", c->move_count);
 		}
 	}
 }

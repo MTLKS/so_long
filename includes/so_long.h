@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/04 15:24:35 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/09 02:54:40 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ typedef struct s_sl_exit
 {
 	t_sl_anim	*open;
 	t_sl_anim	*closed;
-	t_list		*coords;
+	int			x;
+	int			y;
 }	t_sl_exit;
 
 typedef struct s_sl_ui
@@ -142,49 +143,11 @@ typedef struct s_sl_map
 	int			height;
 }	t_sl_map;
 
-// typedef struct s_sl_imgs
-// {
-// 	char				*key;
-// 	t_sl_img			*img;
-// 	struct s_sl_imgs	*next;
-// }	t_sl_imgs;
-
 typedef struct s_sl_imgs
 {
-	t_sl_img	*plyr_idle_left_1;
-	t_sl_img	*plyr_idle_left_2;
-	t_sl_img	*plyr_idle_right_1;
-	t_sl_img	*plyr_idle_right_2;
-	t_sl_img	*plyr_walk_left_1;
-	t_sl_img	*plyr_walk_left_2;
-	t_sl_img	*plyr_walk_right_1;
-	t_sl_img	*plyr_walk_right_2;
-	t_sl_img	*enem_idle_left_1;
-	t_sl_img	*enem_idle_left_2;
-	t_sl_img	*enem_idle_right_1;
-	t_sl_img	*enem_idle_right_2;
-	t_sl_img	*enem_walk_left_1;
-	t_sl_img	*enem_walk_left_2;
-	t_sl_img	*enem_walk_right_1;
-	t_sl_img	*enem_walk_right_2;
-	t_sl_img	*coll_1;
-	t_sl_img	*coll_2;
-	t_sl_img	*coll_3;
-	t_sl_img	*coll_4;
-	t_sl_img	*exit_open_1;
-	t_sl_img	*exit_open_2;
-	t_sl_img	*exit_open_3;
-	t_sl_img	*exit_open_4;
-	t_sl_img	*exit_closed_1;
-	t_sl_img	*exit_closed_2;
-	t_sl_img	*exit_closed_3;
-	t_sl_img	*exit_closed_4;
-	t_sl_img	*ground;
-	t_sl_img	*wall;
-	t_sl_img	*move_up;
-	t_sl_img	*move_down;
-	t_sl_img	*move_left;
-	t_sl_img	*move_right;
+	char				*key;
+	t_sl_img			*img;
+	struct s_sl_imgs	*next;
 }	t_sl_imgs;
 
 typedef struct s_sl_context
@@ -195,19 +158,23 @@ typedef struct s_sl_context
 	t_sl_map	*map;
 	t_sl_player	*player;
 	t_sl_coll	*colls;
-	t_sl_exit	*exits;
+	t_sl_exit	*exit;
 	t_sl_enemy	*enemies;
 	t_sl_ui		*ui;
 	t_sl_imgs	*imgs;
+	int			move_count;
 }	t_sl_context;
 
 int				sl_close(t_sl_context *ctx);
 
 void			sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
 
+void			sl_parse_map_image(t_sl_context *ctx, char c, int x, int y);
+void			sl_loop_map(t_sl_context *ctx,
+					void (*f)(t_sl_context *ctx, char c, int x, int y));
 void			sl_parse_map(t_sl_context *c, char *path);
 
-t_sl_img		*sl_xpm_to_img(void *mlx, char *path);
+t_sl_img		*sl_xpm_to_img(t_sl_context *ctx, char *path);
 t_sl_img		*sl_new_img(void *mlx, int width, int height);
 void			sl_img_free(t_sl_img *img, void *mlx);
 
@@ -230,22 +197,26 @@ t_sl_img		*sl_anim_get_frame(t_sl_anim *anim, int index);
 void			sl_anim_free(t_sl_anim *anim);
 
 t_sl_exit		*sl_exit_init(void);
-void			sl_exit_add_coords(t_sl_exit *exit, int x, int y);
+void			sl_exit_set_coords(t_sl_context *ctx, int x, int y);
 void			sl_exit_copy_all(t_sl_img *img, t_sl_context *c);
 void			sl_exit_check(t_sl_context *c);
 void			sl_exit_free(t_sl_exit *exit);
 
 t_sl_player		*sl_player_init(void);
-void			sl_player_set_coords(t_sl_player *p, int x, int y);
+void			sl_player_set_coords(t_sl_context *ctx, int x, int y);
 t_sl_img		*sl_player_get_anim(t_sl_player *p);
 void			sl_player_free(t_sl_player *player);
 
 t_sl_enemy		*sl_enemy_init(void);
 void			sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
+void			sl_enemy_free(t_sl_enemy *enemy);
 
 void			sl_load_imgs(t_sl_context *ctx);
-void			sl_imgs_free(t_sl_imgs *imgs, void *mlx);
 void			sl_load_anims(t_sl_context *ctx);
+
+void			sl_add_imgs(t_sl_context *ctx, char *key, char *path);
+t_sl_img		*sl_get_imgs(t_sl_imgs *imgs, char *key);
+void			sl_imgs_free(t_sl_imgs *imgs, void *mlx);
 
 void			sl_move_player(t_sl_context *c);
 void			*sl_move_new(int new_move);
@@ -255,6 +226,11 @@ t_sl_img		*sl_ui_get_move_img(t_sl_context *c, t_list *move_list);
 
 int				sl_is_wall(t_sl_context *c, int x, int y);
 void			sl_map_free(t_sl_map *map, void *mlx);
+void			sl_init_map(t_sl_map **map);
+void			sl_check_map(t_sl_context *ctx);
+
+void			*sl_map_data_new(char *str);
+void			sl_check_missing_key(t_sl_context *ctx);
 
 void			sl_free_content(void *content);
 void			sl_no_free_content(void *content);
