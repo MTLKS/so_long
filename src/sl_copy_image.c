@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:21:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/08/31 17:21:38 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 17:45:46 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,49 @@ int	sl_ispixelblack(char *buffer, int pixel)
 	return (1);
 }
 
+static int	sl_get_start_value(int num)
+{
+	if (num < 0)
+		return (-num);
+	else
+		return (-1);
+}
+
+static void	sl_copy_pixel(t_sl_data_addr d, t_sl_data_addr s)
+{
+	d.address[d.pixel + 0] = s.address[s.pixel + 0];
+	d.address[d.pixel + 1] = s.address[s.pixel + 1];
+	d.address[d.pixel + 2] = s.address[s.pixel + 2];
+	d.address[d.pixel + 3] = s.address[s.pixel + 3];
+}
+
 /*
 ** https://harm-smits.github.io/42docs/libs/minilibx/prototypes.html
 ** https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html
 */
 void	sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y)
 {
-	int		endian;
-	int		pixel_bits;
-	int		line_bytes;
-	int		line_bytes2;
-	int		i;
-	int		j;
-	char	*buffer;
-	char	*buffer2;
+	t_sl_data_addr	d;
+	t_sl_data_addr	s;
+	int				i;
+	int				j;
 
 	if (des == NULL || src == NULL)
 		return ;
-	buffer = mlx_get_data_addr(src->img, &pixel_bits, &line_bytes, &endian);
-	buffer2 = mlx_get_data_addr(des->img, &pixel_bits, &line_bytes2, &endian);
-	if (y < 0)
-		j = -y;
-	else
-		j = -1;
+	s.address = mlx_get_data_addr(src->img, &s.pixel_bits, &s.size_line,
+			&s.endian);
+	d.address = mlx_get_data_addr(des->img, &d.pixel_bits, &d.size_line,
+			&d.endian);
+	j = sl_get_start_value(y);
 	while (++j < src->height && y + j < des->height)
 	{
-		if (x < 0)
-			i = -x;
-		else
-			i = -1;
-		while (++i < src->width && x+i < des->width)
+		i = sl_get_start_value(x);
+		while (++i < src->width && x + i < des->width)
 		{
-			int pixel = ((j) * line_bytes) + ((i) * 4);
-			int pixel2 = ((y + j) * line_bytes2) + ((x + i) * 4);
-			if (!sl_ispixelblack(buffer, pixel))
-			{
-				buffer2[pixel2 + 0] = buffer[pixel + 0];
-				buffer2[pixel2 + 1] = buffer[pixel + 1];
-				buffer2[pixel2 + 2] = buffer[pixel + 2];
-				buffer2[pixel2 + 3] = buffer[pixel + 3];
-			}
+			s.pixel = ((j) * s.size_line) + ((i) * 4);
+			d.pixel = ((y + j) * d.size_line) + ((x + i) * 4);
+			if (!sl_ispixelblack(s.address, s.pixel))
+				sl_copy_pixel(d, s);
 		}
 	}
 }

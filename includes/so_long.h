@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/09 02:54:40 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/10 17:41:35 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_sl_data_addr
 	int		pixel_bits;
 	int		size_line;
 	int		endian;
+	int		pixel;
 }	t_sl_data_addr;
 
 typedef struct s_sl_img
