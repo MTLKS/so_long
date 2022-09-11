@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 19:09:51 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 17:55:44 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,12 @@
 
 typedef struct s_sl_astar_node
 {
-	int	x;
-	int	y;
-	int	g_cost;
-	int	total_cost;
-	int	last_move;
+	int						x;
+	int						y;
+	int						g_cost;
+	int						h_cost;
+	int						last_move;
+	struct s_sl_astar_node	*prev_node;
 }	t_sl_astar_node;
 
 typedef struct s_sl_pathfind
@@ -256,6 +257,11 @@ void			sl_no_free_content(void *content);
 
 int				sl_abs(int n);
 
+void			sl_pathfind(t_sl_context *ctx, t_sl_pathfind *pf);
+
 int				sl_astar_h_cost(int x, int y, int ex, int ey);
+int				*sl_astar_get_neighbours(int x, int y);
+t_sl_astar_node	*sl_astar_get_node(t_list *queue, int x, int y);
+void			sl_astar_sort_queue(t_list *queue);
 
 #endif
