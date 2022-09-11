@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 17:55:44 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 23:03:18 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,6 @@ typedef struct s_sl_player
 	t_list		*move_list;
 }	t_sl_player;
 
-typedef struct s_sl_enemy
-{
-	t_sl_anim	*idle_left;
-	t_sl_anim	*idle_right;
-	t_sl_anim	*walk_left;
-	t_sl_anim	*walk_right;
-	t_list		*coords;
-}	t_sl_enemy;
-
 typedef struct s_sl_coll
 {
 	t_sl_anim	*anim;
@@ -179,10 +170,11 @@ typedef struct s_sl_context
 	t_sl_player	*player;
 	t_sl_coll	*colls;
 	t_sl_exit	*exit;
-	t_sl_enemy	*enemies;
+	t_sl_player	*enemy;
 	t_sl_ui		*ui;
 	t_sl_imgs	*imgs;
 	int			move_count;
+	int			enemy_moved;
 }	t_sl_context;
 
 int				sl_close(t_sl_context *ctx);
@@ -226,10 +218,11 @@ t_sl_player		*sl_player_init(void);
 void			sl_player_set_coords(t_sl_context *ctx, int x, int y);
 t_sl_img		*sl_player_get_anim(t_sl_player *p);
 void			sl_player_free(t_sl_player *player);
+void			sl_player_copy_image(t_sl_img *buffer, t_sl_context *c);
 
-t_sl_enemy		*sl_enemy_init(void);
-void			sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir);
-void			sl_enemy_free(t_sl_enemy *enemy);
+void			sl_enemy_set_coords(t_sl_context *ctx, int x, int y);
+void			sl_enemy_copy_image(t_sl_img *img, t_sl_context *c);
+void			sl_enemy_check(t_sl_context *c);
 
 void			sl_load_imgs(t_sl_context *ctx);
 void			sl_load_anims(t_sl_context *ctx);
@@ -241,6 +234,8 @@ void			sl_imgs_free(t_sl_imgs *imgs, void *mlx);
 void			sl_move_player(t_sl_context *c);
 void			*sl_move_new(int new_move);
 
+void			sl_move_enemy(t_sl_context *c);
+
 void			sl_ui_display_moves(t_sl_context *c, t_sl_img *buffer_img);
 t_sl_img		*sl_ui_get_move_img(t_sl_context *c, t_list *move_list);
 
@@ -251,6 +246,8 @@ void			sl_check_map(t_sl_context *ctx);
 
 void			*sl_map_data_new(char *str);
 void			sl_check_missing_key(t_sl_context *ctx);
+void			sl_check_invalid_path_coll(t_sl_context *ctx);
+void			sl_check_invalid_path_exit(t_sl_context *ctx);
 
 void			sl_free_content(void *content);
 void			sl_no_free_content(void *content);
@@ -259,9 +256,11 @@ int				sl_abs(int n);
 
 void			sl_pathfind(t_sl_context *ctx, t_sl_pathfind *pf);
 
-int				sl_astar_h_cost(int x, int y, int ex, int ey);
 int				*sl_astar_get_neighbours(int x, int y);
 t_sl_astar_node	*sl_astar_get_node(t_list *queue, int x, int y);
 void			sl_astar_sort_queue(t_list *queue);
+
+int				sl_astar_h_cost(int x, int y, int ex, int ey);
+t_sl_pathfind	*sl_pf_new(int sx, int sy, int ex, int ey);
 
 #endif

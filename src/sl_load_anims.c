@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 16:42:33 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/09 02:12:09 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 19:09:11 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,34 @@ static void	sl_load_anim1(t_sl_context *ctx)
 
 static void	sl_load_anim2(t_sl_context *ctx)
 {
+	sl_anim_add_frame(ctx->enemy->idle_right,
+		sl_get_imgs(ctx->imgs, "enem_idle_right_1"));
+	sl_anim_add_frame(ctx->enemy->idle_right,
+		sl_get_imgs(ctx->imgs, "enem_idle_right_2"));
+	sl_anim_add_frame(ctx->enemy->idle_left,
+		sl_get_imgs(ctx->imgs, "enem_idle_left_1"));
+	sl_anim_add_frame(ctx->enemy->idle_left,
+		sl_get_imgs(ctx->imgs, "enem_idle_left_2"));
+	sl_anim_add_frame(ctx->enemy->walk_right,
+		sl_get_imgs(ctx->imgs, "enem_idle_right_1"));
+	sl_anim_add_frame(ctx->enemy->walk_right,
+		sl_get_imgs(ctx->imgs, "enem_walk_right_1"));
+	sl_anim_add_frame(ctx->enemy->walk_right,
+		sl_get_imgs(ctx->imgs, "enem_idle_right_1"));
+	sl_anim_add_frame(ctx->enemy->walk_right,
+		sl_get_imgs(ctx->imgs, "enem_walk_right_2"));
+	sl_anim_add_frame(ctx->enemy->walk_left,
+		sl_get_imgs(ctx->imgs, "enem_idle_left_1"));
+	sl_anim_add_frame(ctx->enemy->walk_left,
+		sl_get_imgs(ctx->imgs, "enem_walk_left_1"));
+	sl_anim_add_frame(ctx->enemy->walk_left,
+		sl_get_imgs(ctx->imgs, "enem_idle_left_1"));
+	sl_anim_add_frame(ctx->enemy->walk_left,
+		sl_get_imgs(ctx->imgs, "enem_walk_left_2"));
+}
+
+static void	sl_load_anim3(t_sl_context *ctx)
+{
 	sl_anim_add_frame(ctx->exit->closed,
 		sl_get_imgs(ctx->imgs, "exit_closed_1"));
 	sl_anim_add_frame(ctx->exit->closed,
@@ -72,4 +100,5 @@ void	sl_load_anims(t_sl_context *ctx)
 {
 	sl_load_anim1(ctx);
 	sl_load_anim2(ctx);
+	sl_load_anim3(ctx);
 }

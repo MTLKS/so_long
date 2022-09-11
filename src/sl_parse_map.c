@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 11:46:21 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 23:03:09 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	sl_parse_character(t_sl_context *ctx, char c, int x, int y)
 	else if (c == 'E')
 		sl_exit_set_coords(ctx, x * SPRITE_SIZE, y * SPRITE_SIZE);
 	else if (c == 'N')
-		sl_enemy_add_coords(ctx->enemies, x * SPRITE_SIZE, y * SPRITE_SIZE, 0);
+		sl_enemy_set_coords(ctx, x * SPRITE_SIZE, y * SPRITE_SIZE);
 }
 
 void	sl_loop_map(t_sl_context *ctx,
@@ -105,4 +105,6 @@ void	sl_parse_map(t_sl_context *ctx, char *path)
 	sl_loop_map(ctx, &sl_parse_character);
 	sl_check_map(ctx);
 	sl_check_missing_key(ctx);
+	sl_check_invalid_path_coll(ctx);
+	sl_check_invalid_path_exit(ctx);
 }

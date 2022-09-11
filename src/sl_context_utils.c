@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:10:32 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 15:32:01 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 18:12:54 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_sl_context	*sl_context_init(void)
 	ctx->player = sl_player_init();
 	ctx->colls = sl_coll_init();
 	ctx->exit = sl_exit_init();
-	ctx->enemies = sl_enemy_init();
+	ctx->enemy = sl_player_init();
 	ctx->scene = sl_new_img(ctx->mlx, SCREEN_W, SCREEN_H);
 	ctx->imgs = NULL;
 	ctx->move_count = 0;
@@ -37,7 +37,7 @@ void	sl_context_free(t_sl_context *ctx)
 	sl_player_free(ctx->player);
 	sl_coll_free(ctx->colls);
 	sl_exit_free(ctx->exit);
-	sl_enemy_free(ctx->enemies);
+	sl_player_free(ctx->enemy);
 	sl_imgs_free(ctx->imgs, ctx->mlx);
 	if (ctx->win)
 		mlx_destroy_window(ctx->mlx, ctx->win);

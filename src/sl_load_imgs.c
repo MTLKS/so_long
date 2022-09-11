@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:15:48 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 11:38:53 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 19:08:33 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ static void	sl_load_imgs3(t_sl_context *ctx)
 	sl_add_imgs(ctx, "plyr_walk_left_2", "./assets/sprites/cat_w_left2.xpm");
 	sl_add_imgs(ctx, "plyr_walk_right_1", "./assets/sprites/cat_w_right1.xpm");
 	sl_add_imgs(ctx, "plyr_walk_right_2", "./assets/sprites/cat_w_right2.xpm");
+	sl_add_imgs(ctx, "enem_idle_left_1", "./assets/sprites/ene_s_left.xpm");
+	sl_add_imgs(ctx, "enem_idle_left_2", "./assets/sprites/ene_s_left2.xpm");
+	sl_add_imgs(ctx, "enem_idle_right_1", "./assets/sprites/ene_s_right.xpm");
+	sl_add_imgs(ctx, "enem_idle_right_2", "./assets/sprites/ene_s_right2.xpm");
+	sl_add_imgs(ctx, "enem_walk_left_1", "./assets/sprites/ene_w_left1.xpm");
+	sl_add_imgs(ctx, "enem_walk_left_2", "./assets/sprites/ene_w_left2.xpm");
+	sl_add_imgs(ctx, "enem_walk_right_1", "./assets/sprites/ene_w_right1.xpm");
+	sl_add_imgs(ctx, "enem_walk_right_2", "./assets/sprites/ene_w_right2.xpm");
 }
 
 void	sl_load_imgs(t_sl_context *ctx)

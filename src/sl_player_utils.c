@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:14 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/08 02:49:08 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 21:37:43 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,10 @@ void	sl_player_free(t_sl_player *player)
 	sl_anim_free(player->walk_right);
 	ft_lstclear(&player->move_list, &sl_free_content);
 	free(player);
+}
+
+void	sl_player_copy_image(t_sl_img *buffer, t_sl_context *c)
+{
+	sl_copy_image(buffer, sl_player_get_anim(c->player),
+		(SCREEN_W - SPRITE_SIZE) / 2, (SCREEN_H - SPRITE_SIZE) / 2);
 }

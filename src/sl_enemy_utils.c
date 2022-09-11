@@ -6,42 +6,60 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/08 01:53:37 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 22:10:17 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_sl_enemy	*sl_enemy_init(void)
+void	sl_enemy_set_coords(t_sl_context *ctx, int x, int y)
 {
-	t_sl_enemy	*enemy;
-
-	enemy = (t_sl_enemy *)malloc(sizeof(t_sl_enemy));
-	enemy->idle_left = sl_anim_init();
-	enemy->idle_right = sl_anim_init();
-	enemy->walk_left = sl_anim_init();
-	enemy->walk_right = sl_anim_init();
-	enemy->coords = NULL;
-	return (enemy);
+	if (ctx->enemy->x != 0 || ctx->enemy->y != 0)
+	{
+		ft_printf("Error: Double key 'N' at [%d,%d] and [%d,%d].\n",
+			ctx->enemy->y / SPRITE_SIZE + 1, ctx->enemy->x / SPRITE_SIZE + 1,
+			x / SPRITE_SIZE + 1, y / SPRITE_SIZE + 1);
+		sl_close(ctx);
+	}
+	ctx->enemy->x = x;
+	ctx->enemy->y = y;
 }
 
-void	sl_enemy_add_coords(t_sl_enemy *enemy, int x, int y, int dir)
+t_sl_img	*sl_enemy_get_anim(t_sl_player *p)
 {
-	int	*arr;
+	static int	i = 0;
+	static int	frame = 0;
 
-	arr = (int *)malloc(3 * sizeof(int));
-	arr[0] = x;
-	arr[1] = y;
-	arr[2] = dir;
-	ft_lstadd_back(&enemy->coords, ft_lstnew(arr));
+	frame = ++i / ANIM_SPEED;
+	if (p->dir && !p->move_list)
+		return (sl_anim_get_frame(p->idle_right,
+				frame % p->idle_right->frame_count));
+	else if (!p->dir && !p->move_list)
+		return (sl_anim_get_frame(p->idle_left,
+				frame % p->idle_left->frame_count));
+	else if (p->dir)
+		return (sl_anim_get_frame(p->walk_right,
+				frame % p->walk_right->frame_count));
+	else
+		return (sl_anim_get_frame(p->walk_left,
+				frame % p->walk_left->frame_count));
 }
 
-void	sl_enemy_free(t_sl_enemy *enemy)
+void	sl_enemy_copy_image(t_sl_img *img, t_sl_context *c)
 {
-	sl_anim_free(enemy->idle_left);
-	sl_anim_free(enemy->idle_right);
-	sl_anim_free(enemy->walk_left);
-	sl_anim_free(enemy->walk_right);
-	ft_lstclear(&enemy->coords, &sl_free_content);
-	free(enemy);
+	t_sl_img	*frame_img;
+
+	frame_img = sl_enemy_get_anim(c->enemy);
+	sl_copy_image(img, frame_img,
+		(SCREEN_W - SPRITE_SIZE) / 2 -(c->player->x) + c->enemy->x,
+		(SCREEN_H - SPRITE_SIZE) / 2 -(c->player->y) + c->enemy->y);
+}
+
+void	sl_enemy_check(t_sl_context *c)
+{
+	if (c->player->x == c->enemy->x && c->player->y == c->enemy->y)
+	{
+		ft_printf("You Lose!\n");
+		sl_close(c);
+	}	
 }

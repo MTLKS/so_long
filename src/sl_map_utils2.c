@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 03:32:55 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/09 02:54:51 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/11 23:02:46 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,54 @@ void	sl_check_missing_key(t_sl_context *ctx)
 	else if (ft_lstsize(ctx->colls->coords) == 0)
 	{
 		ft_printf("Error: Missing key 'C'.\n");
+		sl_close(ctx);
+	}
+}
+
+void	sl_check_invalid_path_coll(t_sl_context *ctx)
+{
+	t_list			*buffer;
+	t_sl_pathfind	*pf;
+	int				error;
+
+	buffer = ctx->colls->coords;
+	while (buffer)
+	{
+		pf = sl_pf_new(ctx->player->x / SPRITE_SIZE,
+				ctx->player->y / SPRITE_SIZE,
+				((int *)(buffer->content))[0] / SPRITE_SIZE,
+				((int *)(buffer->content))[1] / SPRITE_SIZE);
+		sl_pathfind(ctx, pf);
+		error = !pf->moves;
+		ft_lstclear(&pf->moves, &sl_free_content);
+		free(pf);
+		if (error)
+		{
+			ft_printf("Error: No valid path to Collectible at [%d, %d].\n",
+				((int *)(buffer->content))[0] / SPRITE_SIZE,
+				((int *)(buffer->content))[1] / SPRITE_SIZE);
+			sl_close(ctx);
+		}
+		pf = NULL;
+		buffer = buffer->next;
+	}
+}
+
+void	sl_check_invalid_path_exit(t_sl_context *ctx)
+{
+	t_sl_pathfind	*pf;
+	int				error;
+
+	pf = sl_pf_new(ctx->player->x / SPRITE_SIZE, ctx->player->y / SPRITE_SIZE,
+			ctx->exit->x / SPRITE_SIZE, ctx->exit->y / SPRITE_SIZE);
+	sl_pathfind(ctx, pf);
+	error = !pf->moves;
+	ft_lstclear(&pf->moves, &sl_free_content);
+	free(pf);
+	if (error)
+	{
+		ft_printf("Error: No valid path to Exit at [%d, %d].\n",
+			ctx->exit->x / SPRITE_SIZE, ctx->exit->y / SPRITE_SIZE);
 		sl_close(ctx);
 	}
 }
