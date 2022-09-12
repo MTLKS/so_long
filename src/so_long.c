@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 22:10:32 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/12 21:31:16 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,26 @@ int	sl_render(t_sl_context *c)
 	static int	i = 0;
 	t_sl_img	*buffer;
 
-	if (i > LOOPS_PER_TICK)
+	if (++i % LOOPS_PER_TICK == 0)
 	{
-		i = 0;
 		buffer = sl_new_img(c->mlx, SCREEN_W, SCREEN_H);
 		sl_move_player(c);
-		sl_move_enemy(c);
+		if (c->enemy->x)
+			sl_move_enemy(c);
 		sl_coll_check(c);
-		sl_copy_image(buffer, c->map->img,
-			(SCREEN_W - SPRITE_SIZE) / 2 - c->player->x,
-			(SCREEN_H - SPRITE_SIZE) / 2 - c->player->y);
+		sl_map_copy_image(buffer, c);
 		sl_coll_copy_all(buffer, c);
 		sl_exit_copy_all(buffer, c);
 		sl_enemy_copy_image(buffer, c);
 		sl_player_copy_image(buffer, c);
-		sl_ui_display_moves(c, buffer);
+		sl_ui_display_moves(buffer, c);
+		sl_print_movecount(buffer, c);
 		mlx_put_image_to_window(c->mlx, c->win, buffer->img, 0, 0);
 		mlx_destroy_image(c->mlx, buffer->img);
 		free(buffer);
 		sl_enemy_check(c);
 		sl_exit_check(c);
 	}
-	i++;
 	return (0);
 }
 

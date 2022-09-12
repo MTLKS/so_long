@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 23:03:18 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/12 21:28:26 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ void			*sl_move_new(int new_move);
 
 void			sl_move_enemy(t_sl_context *c);
 
-void			sl_ui_display_moves(t_sl_context *c, t_sl_img *buffer_img);
+void			sl_ui_display_moves(t_sl_img *buffer_img, t_sl_context *c);
 t_sl_img		*sl_ui_get_move_img(t_sl_context *c, t_list *move_list);
 
 int				sl_is_wall(t_sl_context *c, int x, int y);
@@ -248,6 +248,7 @@ void			*sl_map_data_new(char *str);
 void			sl_check_missing_key(t_sl_context *ctx);
 void			sl_check_invalid_path_coll(t_sl_context *ctx);
 void			sl_check_invalid_path_exit(t_sl_context *ctx);
+void			sl_map_copy_image(t_sl_img *buffer, t_sl_context *c);
 
 void			sl_free_content(void *content);
 void			sl_no_free_content(void *content);
@@ -262,5 +263,7 @@ void			sl_astar_sort_queue(t_list *queue);
 
 int				sl_astar_h_cost(int x, int y, int ex, int ey);
 t_sl_pathfind	*sl_pf_new(int sx, int sy, int ex, int ey);
+
+void			sl_print_movecount(t_sl_img *buffer, t_sl_context *c);
 
 #endif

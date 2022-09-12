@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:15:48 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 19:08:33 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/12 21:19:11 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ static void	sl_load_imgs2(t_sl_context *ctx)
 	sl_add_imgs(ctx, "move_down", "./assets/sprites/move_down.xpm");
 	sl_add_imgs(ctx, "move_left", "./assets/sprites/move_left.xpm");
 	sl_add_imgs(ctx, "move_right", "./assets/sprites/move_right.xpm");
+	sl_add_imgs(ctx, "0", "./assets/sprites/cat_s_left.xpm");
+	sl_add_imgs(ctx, "1", "./assets/sprites/cat_s_left2.xpm");
+	sl_add_imgs(ctx, "2", "./assets/sprites/cat_s_right.xpm");
+	sl_add_imgs(ctx, "3", "./assets/sprites/cat_s_right2.xpm");
+	sl_add_imgs(ctx, "4", "./assets/sprites/cat_w_left1.xpm");
+	sl_add_imgs(ctx, "5", "./assets/sprites/cat_w_left2.xpm");
+	sl_add_imgs(ctx, "6", "./assets/sprites/cat_w_right1.xpm");
+	sl_add_imgs(ctx, "7", "./assets/sprites/cat_w_right2.xpm");
+	sl_add_imgs(ctx, "8", "./assets/sprites/ene_s_left.xpm");
+	sl_add_imgs(ctx, "9", "./assets/sprites/ene_s_left2.xpm");
 }
 
 static void	sl_load_imgs3(t_sl_context *ctx)

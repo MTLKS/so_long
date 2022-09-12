@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:07:02 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/08 00:49:31 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/12 21:03:39 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_sl_img	*sl_ui_get_move_img(t_sl_context *c, t_list *move_list)
 	return (img);
 }
 
-void	sl_ui_display_moves(t_sl_context *c, t_sl_img *buffer_img)
+void	sl_ui_display_moves(t_sl_img *buffer_img, t_sl_context *c)
 {
 	t_list	*buffer_move;
 	int		x;

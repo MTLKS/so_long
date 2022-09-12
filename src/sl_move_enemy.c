@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:17:21 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 22:11:00 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/12 20:23:31 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	sl_move_enemy(t_sl_context *c)
 			c->enemy->move_count = STEP_SIZE;
 			c->enemy->move_list = pf->moves;
 			free(pf);
-			pf = NULL;
 		}
 		sl_move_enemy_step(c);
 		c->enemy->move_count--;

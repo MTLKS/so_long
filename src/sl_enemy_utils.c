@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 22:10:17 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/12 20:21:05 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	sl_enemy_copy_image(t_sl_img *img, t_sl_context *c)
 {
 	t_sl_img	*frame_img;
 
+	if (!c->enemy->x)
+		return ;
 	frame_img = sl_enemy_get_anim(c->enemy);
 	sl_copy_image(img, frame_img,
 		(SCREEN_W - SPRITE_SIZE) / 2 -(c->player->x) + c->enemy->x,
