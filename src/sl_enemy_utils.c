@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/12 20:21:05 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 01:12:53 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	sl_enemy_set_coords(t_sl_context *ctx, int x, int y)
 	{
 		ft_printf("Error: Double key 'N' at [%d,%d] and [%d,%d].\n",
 			ctx->enemy->y / SPRITE_SIZE + 1, ctx->enemy->x / SPRITE_SIZE + 1,
-			x / SPRITE_SIZE + 1, y / SPRITE_SIZE + 1);
+			y / SPRITE_SIZE + 1, x / SPRITE_SIZE + 1);
 		sl_close(ctx);
 	}
 	ctx->enemy->x = x;
