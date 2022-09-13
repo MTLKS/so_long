@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 20:45:22 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/12 21:21:48 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 01:06:46 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,23 @@ void	sl_put_movecount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
 	x++;
 }
 
-void	sl_print_movecount(t_sl_img *buffer, t_sl_context *c)
+void	sl_put_collcount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
 {
+	static int	x;
+
+	if (flag)
+		x = 1;
+	if (n >= 10)
+		sl_put_collcount(buffer, c, n / 10, 0);
+	sl_copy_image(buffer, sl_get_movecount_img(c, n % 10),
+		x * SPRITE_SIZE, SPRITE_SIZE);
+	x++;
+}
+
+void	sl_ui_print_count(t_sl_img *buffer, t_sl_context *c)
+{
+	sl_copy_image(buffer, sl_get_imgs(c->imgs, "move_count"), 0, 0);
 	sl_put_movecount(buffer, c, c->move_count, 1);
+	sl_copy_image(buffer, sl_get_imgs(c->imgs, "coll_1"), 0, SPRITE_SIZE);
+	sl_put_collcount(buffer, c, (int)ft_lstsize(c->colls->coords), 1);
 }

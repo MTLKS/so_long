@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/12 21:28:26 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 03:35:40 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 ** LOOPS_PER_TICK	= The number of loop calls before loop hook runs
 ** ANIM_SPEED		= The speed of animation, lower value = faster speed
 */
-# define SCREEN_W 1280
-# define SCREEN_H 720
+# define SCREEN_W 640
+# define SCREEN_H 320
 # define SPRITE_SIZE 64
 # define STEP_SIZE 4
 # define MOVE_UP 0
@@ -38,7 +38,7 @@
 #  define ANIM_SPEED 5
 #  define LOOPS_PER_TICK 500
 # else
-#  define ANIM_SPEED 5
+#  define ANIM_SPEED 2
 #  define LOOPS_PER_TICK 5000
 # endif
 
@@ -190,8 +190,6 @@ t_sl_img		*sl_xpm_to_img(t_sl_context *ctx, char *path);
 t_sl_img		*sl_new_img(void *mlx, int width, int height);
 void			sl_img_free(t_sl_img *img, void *mlx);
 
-void			sl_print_context(t_sl_context *c);
-
 t_sl_context	*sl_context_init(void);
 void			sl_context_free(t_sl_context *ctx);
 
@@ -264,6 +262,6 @@ void			sl_astar_sort_queue(t_list *queue);
 int				sl_astar_h_cost(int x, int y, int ex, int ey);
 t_sl_pathfind	*sl_pf_new(int sx, int sy, int ex, int ey);
 
-void			sl_print_movecount(t_sl_img *buffer, t_sl_context *c);
+void			sl_ui_print_count(t_sl_img *buffer, t_sl_context *c);
 
 #endif
