@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 12:13:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 15:29:09 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 03:42:21 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	sl_move_player(t_sl_context *c)
 			ft_lstdelone(temp, &sl_free_content);
 			c->move_count++;
 			ft_printf("Movement count: %d\n", c->move_count);
+			c->enemy_moved = 0;
 		}
 	}
 }

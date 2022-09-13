@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 03:32:55 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/12 20:16:22 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 04:34:00 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ void	sl_check_invalid_path_coll(t_sl_context *ctx)
 		free(pf);
 		if (error)
 		{
-			ft_printf("Error: No valid path to Collectible at [%d, %d].\n",
-				((int *)(buffer->content))[0] / SPRITE_SIZE,
-				((int *)(buffer->content))[1] / SPRITE_SIZE);
+			ft_printf("Error: No valid path to Collectible at Ln %d, Col %d.\n",
+				((int *)(buffer->content))[1] / SPRITE_SIZE + 1,
+				((int *)(buffer->content))[0] / SPRITE_SIZE + 1);
 			sl_close(ctx);
 		}
 		pf = NULL;
@@ -82,8 +82,8 @@ void	sl_check_invalid_path_exit(t_sl_context *ctx)
 	free(pf);
 	if (error)
 	{
-		ft_printf("Error: No valid path to Exit at [%d, %d].\n",
-			ctx->exit->x / SPRITE_SIZE, ctx->exit->y / SPRITE_SIZE);
+		ft_printf("Error: No valid path to Exit at Ln %d, Col %d.\n",
+			ctx->exit->y / SPRITE_SIZE + 1, ctx->exit->x / SPRITE_SIZE + 1);
 		sl_close(ctx);
 	}
 }

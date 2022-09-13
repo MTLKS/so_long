@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 23:03:09 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 04:17:01 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,11 @@ static int	sl_open_map_fd(t_sl_context *ctx, char *path)
 void	sl_parse_map(t_sl_context *ctx, char *path)
 {
 	int		fd;
-	int		len;
 	char	*buffer;
 
-	(void)len;
 	sl_init_map(&ctx->map);
 	fd = sl_open_map_fd(ctx, path);
 	buffer = get_next_line(fd);
-	len = ft_strlen(buffer);
 	while (buffer)
 	{
 		ctx->map->height++;

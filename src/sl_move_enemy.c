@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:17:21 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/12 20:23:31 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 03:43:12 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	sl_move_enemy(t_sl_context *c)
 {
 	t_sl_pathfind	*pf;
 
-	if (c->move_count % 2 == 1 && c->enemy_moved == 0)
+	if ((ENEMY_MOVE < 2 || c->move_count % ENEMY_MOVE == 0)
+		&& c->enemy_moved == 0)
 	{
 		if (c->enemy->move_count == 0)
 		{
@@ -58,6 +59,4 @@ void	sl_move_enemy(t_sl_context *c)
 			c->enemy_moved = 1;
 		}
 	}
-	else if (c->move_count % 2 == 0)
-		c->enemy_moved = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 17:37:58 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 11:47:48 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 04:29:10 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	sl_check_map(t_sl_context *ctx)
 	while (buffer)
 	{
 		if (!((int)ft_strlen(buffer->content) - 1 == ctx->map->width
-				|| ((int)ft_strlen(buffer->content) - 1 == (ctx->map->width - 1)
+				|| ((int)ft_strlen(buffer->content) == ctx->map->width
 					&& i == ctx->map->height)))
 		{
 			ft_printf("Error: Wrong width on Ln %d.\n", i);

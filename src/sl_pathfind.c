@@ -6,24 +6,37 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 17:31:09 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 17:56:16 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 05:21:34 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_sl_astar_node	*sl_astar_new(int x, int y, int g_cost, int h_cost)
+void	sl_pf_iter_neighbour(t_sl_pathfind *pf, t_list **open,
+	t_sl_astar_node *curr, int i)
 {
-	t_sl_astar_node	*node;
+	t_sl_astar_node	*new;
 
-	node = (t_sl_astar_node *)malloc(sizeof(t_sl_astar_node));
-	node->x = x;
-	node->y = y;
-	node->g_cost = g_cost;
-	node->h_cost = h_cost;
-	node->last_move = -1;
-	node->prev_node = NULL;
-	return (node);
+	new = sl_astar_get_node(*open, curr->n[i], curr->n[i + 1]);
+	if (new && new->g_cost > curr->g_cost + 1)
+	{
+		new->g_cost = curr->g_cost + 1;
+		new->h_cost = sl_astar_h_cost(curr->n[i], curr->n[i + 1],
+				pf->ex, pf->ey);
+		new->last_move = i / 2;
+		new->prev_node = curr;
+	}
+	else
+	{
+		new = sl_astar_new(curr->n[i], curr->n[i + 1],
+				curr->g_cost + 1,
+				sl_astar_h_cost(curr->n[i], curr->n[i + 1],
+					pf->ex, pf->ey));
+		new->last_move = i / 2;
+		new->prev_node = curr;
+		ft_lstadd_back(open, ft_lstnew(new));
+	}
+	sl_astar_sort_queue(*open);
 }
 
 t_sl_astar_node	*sl_astar_pop(t_list **queue)
@@ -58,49 +71,30 @@ t_list	*sl_pf_get_moves(t_sl_pathfind *pf, t_list *closed)
 int	sl_pf_loop(t_sl_context *ctx, t_sl_pathfind *pf,
 	t_list **open, t_list **closed)
 {
-	t_sl_astar_node	*curr_node;
-	t_sl_astar_node	*new_node;
-	int				*n;
+	t_sl_astar_node	*curr;
 	int				i;
 
-	curr_node = sl_astar_pop(open);
-	if (!curr_node)
+	curr = sl_astar_pop(open);
+	if (!curr)
 		return (-1);
-	if (curr_node->x == pf->ex && curr_node->y == pf->ey)
+	if (curr->x == pf->ex && curr->y == pf->ey)
 	{
-		ft_lstadd_back(closed, ft_lstnew(curr_node));
+		ft_lstadd_back(closed, ft_lstnew(curr));
 		return (1);
 	}
-	n = sl_astar_get_neighbours(curr_node->x, curr_node->y);
+	curr->n = sl_astar_get_neighbours(curr->x, curr->y);
 	i = 0;
 	while (i < 8)
 	{
-		if (!sl_is_wall(ctx, n[i] * SPRITE_SIZE, n[i + 1] * SPRITE_SIZE)
-			&& !sl_astar_get_node(*closed, n[i], n[i + 1]))
-		{
-			new_node = sl_astar_get_node(*open, n[i], n[i + 1]);
-			if (new_node && new_node->g_cost > curr_node->g_cost + 1)
-			{
-				new_node->g_cost = curr_node->g_cost + 1;
-				new_node->h_cost = sl_astar_h_cost(n[i], n[i + 1],
-						pf->ex, pf->ey);
-				new_node->last_move = i / 2;
-				new_node->prev_node = curr_node;
-			}
-			else
-			{
-				new_node = sl_astar_new(n[i], n[i + 1], curr_node->g_cost + 1,
-						sl_astar_h_cost(n[i], n[i + 1], pf->ex, pf->ey));
-				new_node->last_move = i / 2;
-				new_node->prev_node = curr_node;
-				ft_lstadd_back(open, ft_lstnew(new_node));
-			}
-			sl_astar_sort_queue(*open);
-		}
+		if (!sl_is_wall(ctx, curr->n[i] * SPRITE_SIZE,
+				curr->n[i + 1] * SPRITE_SIZE)
+			&& !sl_astar_get_node(*closed, curr->n[i],
+				curr->n[i + 1]))
+			sl_pf_iter_neighbour(pf, open, curr, i);
 		i = i + 2;
 	}
-	free(n);
-	ft_lstadd_back(closed, ft_lstnew(curr_node));
+	free(curr->n);
+	ft_lstadd_back(closed, ft_lstnew(curr));
 	return (0);
 }
 

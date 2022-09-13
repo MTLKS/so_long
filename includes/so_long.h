@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 03:35:40 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 05:21:14 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,15 @@
 ** SPRITE_SIZE		= Size of one sprite
 ** STEP_SIZE		= Number of steps to move distance of SPRITE_SIZE
 **						SPRITE_SIZE must be divisible by STEP_SIZE.
-** LOOPS_PER_TICK	= The number of loop calls before loop hook runs
+** ENEMY_MOVE		= Number of steps player can take before enemy moves
 ** ANIM_SPEED		= The speed of animation, lower value = faster speed
+** LOOPS_PER_TICK	= The number of loop calls before loop hook runs
 */
 # define SCREEN_W 640
 # define SCREEN_H 320
 # define SPRITE_SIZE 64
 # define STEP_SIZE 4
-# define MOVE_UP 0
-# define MOVE_DOWN 1
-# define MOVE_LEFT 2
-# define MOVE_RIGHT 3
-# define FACE_LEFT 0
-# define FACE_RIGHT 1
+# define ENEMY_MOVE 2
 # ifdef __APPLE__
 #  define ANIM_SPEED 5
 #  define LOOPS_PER_TICK 500
@@ -41,6 +37,12 @@
 #  define ANIM_SPEED 2
 #  define LOOPS_PER_TICK 5000
 # endif
+# define MOVE_UP 0
+# define MOVE_DOWN 1
+# define MOVE_LEFT 2
+# define MOVE_RIGHT 3
+# define FACE_LEFT 0
+# define FACE_RIGHT 1
 
 // Event definition
 # define ON_DESTROY 17
@@ -72,6 +74,7 @@ typedef struct s_sl_astar_node
 {
 	int						x;
 	int						y;
+	int						*n;
 	int						g_cost;
 	int						h_cost;
 	int						last_move;
@@ -165,7 +168,6 @@ typedef struct s_sl_context
 {
 	void		*mlx;
 	void		*win;
-	t_sl_img	*scene;
 	t_sl_map	*map;
 	t_sl_player	*player;
 	t_sl_coll	*colls;
@@ -261,6 +263,9 @@ void			sl_astar_sort_queue(t_list *queue);
 
 int				sl_astar_h_cost(int x, int y, int ex, int ey);
 t_sl_pathfind	*sl_pf_new(int sx, int sy, int ex, int ey);
+t_sl_astar_node	*sl_astar_new(int x, int y, int g_cost, int h_cost);
+void			sl_pf_iter_neighbour(t_sl_pathfind *pf, t_list **open,
+					t_sl_astar_node *curr, int i);
 
 void			sl_ui_print_count(t_sl_img *buffer, t_sl_context *c);
 

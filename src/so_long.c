@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 01:02:59 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 05:05:55 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,14 @@ int	sl_close(t_sl_context *ctx)
 	sl_context_free(ctx);
 	ft_printf("Exiting so_long...\n");
 	exit(0);
+	return (0);
 }
 
-void	sl_pf_print(void *content)
+int	sl_close_window(t_sl_context *ctx)
 {
-	ft_printf("%d, ", *(int *)content);
+	ft_printf("Window closed.\n");
+	sl_close(ctx);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -97,6 +100,6 @@ int	main(int argc, char **argv)
 	ctx->win = mlx_new_window(ctx->mlx, SCREEN_W, SCREEN_H, "so_long");
 	mlx_loop_hook(ctx->mlx, sl_render, ctx);
 	mlx_key_hook(ctx->win, sl_key_hook, ctx);
-	mlx_hook(ctx->win, ON_DESTROY, 0L, sl_close, ctx);
+	mlx_hook(ctx->win, ON_DESTROY, 0L, sl_close_window, ctx);
 	mlx_loop(ctx->mlx);
 }
