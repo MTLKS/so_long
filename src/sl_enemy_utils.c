@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 14:52:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 01:12:53 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:34:54 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	sl_enemy_set_coords(t_sl_context *ctx, int x, int y)
 	ctx->enemy->y = y;
 }
 
-t_sl_img	*sl_enemy_get_anim(t_sl_player *p)
+static t_sl_img	*sl_enemy_get_anim(t_sl_player *p)
 {
 	static int	i = 0;
 	static int	frame = 0;

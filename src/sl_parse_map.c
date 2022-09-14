@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 20:19:04 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 04:17:01 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:36:41 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	sl_parse_map_image(t_sl_context *ctx, char c, int x, int y)
 			x * SPRITE_SIZE, y * SPRITE_SIZE);
 }
 
-void	sl_parse_character(t_sl_context *ctx, char c, int x, int y)
+static void	sl_parse_character(t_sl_context *ctx, char c, int x, int y)
 {
 	if (!ft_strchr("CENP01\n", c))
 	{

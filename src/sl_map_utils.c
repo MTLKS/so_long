@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 17:37:58 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 04:29:10 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:25:30 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	sl_init_map(t_sl_map **map)
 	(*map)->height = 0;
 }
 
-void	sl_check_wall(t_sl_context *ctx, char *data, int edge, int i)
+static void	sl_check_wall(t_sl_context *ctx, char *data, int edge, int i)
 {
 	int	error;
 

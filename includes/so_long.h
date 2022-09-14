@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:52 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 05:21:14 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:39:11 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,16 +139,6 @@ typedef struct s_sl_exit
 	int			y;
 }	t_sl_exit;
 
-typedef struct s_sl_ui
-{
-	t_sl_img	*moves;
-	t_sl_img	*map;
-	t_sl_img	*up;
-	t_sl_img	*down;
-	t_sl_img	*left;
-	t_sl_img	*right;
-}	t_sl_ui;
-
 typedef struct s_sl_map
 {
 	t_list		*data;
@@ -173,100 +163,121 @@ typedef struct s_sl_context
 	t_sl_coll	*colls;
 	t_sl_exit	*exit;
 	t_sl_player	*enemy;
-	t_sl_ui		*ui;
 	t_sl_imgs	*imgs;
 	int			move_count;
 	int			enemy_moved;
 }	t_sl_context;
 
-int				sl_close(t_sl_context *ctx);
+// sl_anim_utils.c
+t_sl_anim		*sl_anim_init(void);
+void			sl_anim_add_frame(t_sl_anim *anim, t_sl_img *img);
+t_sl_img		*sl_anim_get_frame(t_sl_anim *anim, int index);
+void			sl_anim_free(t_sl_anim *anim);
 
-void			sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
-
-void			sl_parse_map_image(t_sl_context *ctx, char c, int x, int y);
-void			sl_loop_map(t_sl_context *ctx,
-					void (*f)(t_sl_context *ctx, char c, int x, int y));
-void			sl_parse_map(t_sl_context *c, char *path);
-
-t_sl_img		*sl_xpm_to_img(t_sl_context *ctx, char *path);
-t_sl_img		*sl_new_img(void *mlx, int width, int height);
-void			sl_img_free(t_sl_img *img, void *mlx);
-
-t_sl_context	*sl_context_init(void);
-void			sl_context_free(t_sl_context *ctx);
-
+// sl_coll_utils.c
 t_sl_coll		*sl_coll_init(void);
 void			sl_coll_add_coords(t_sl_coll *coll, int x, int y);
 int				*sl_coll_get_coords(t_sl_coll *coll, int index);
 void			sl_coll_copy_all(t_sl_img *img, t_sl_context *c);
 void			sl_coll_check(t_sl_context *c);
 
+// sl_coll_utils2.c
 void			sl_coll_free(t_sl_coll *coll);
 
-t_sl_anim		*sl_anim_init(void);
-void			sl_anim_add_frame(t_sl_anim *anim, t_sl_img *img);
-t_sl_img		*sl_anim_get_frame(t_sl_anim *anim, int index);
-void			sl_anim_free(t_sl_anim *anim);
+// sl_context_utils.c
+t_sl_context	*sl_context_init(void);
+void			sl_context_free(t_sl_context *ctx);
 
+// sl_copy_image.c
+void			sl_copy_image(t_sl_img *des, t_sl_img *src, int x, int y);
+
+// sl_enemy_utils.c
+void			sl_enemy_set_coords(t_sl_context *ctx, int x, int y);
+void			sl_enemy_copy_image(t_sl_img *img, t_sl_context *c);
+void			sl_enemy_check(t_sl_context *c);
+
+// sl_exit_utils.c
 t_sl_exit		*sl_exit_init(void);
 void			sl_exit_set_coords(t_sl_context *ctx, int x, int y);
 void			sl_exit_copy_all(t_sl_img *img, t_sl_context *c);
 void			sl_exit_check(t_sl_context *c);
 void			sl_exit_free(t_sl_exit *exit);
 
-t_sl_player		*sl_player_init(void);
-void			sl_player_set_coords(t_sl_context *ctx, int x, int y);
-t_sl_img		*sl_player_get_anim(t_sl_player *p);
-void			sl_player_free(t_sl_player *player);
-void			sl_player_copy_image(t_sl_img *buffer, t_sl_context *c);
+// sl_free_utils.c
+void			sl_free_content(void *content);
+void			sl_no_free_content(void *content);
 
-void			sl_enemy_set_coords(t_sl_context *ctx, int x, int y);
-void			sl_enemy_copy_image(t_sl_img *img, t_sl_context *c);
-void			sl_enemy_check(t_sl_context *c);
+// sl_img_utils.c
+t_sl_img		*sl_xpm_to_img(t_sl_context *ctx, char *path);
+t_sl_img		*sl_new_img(void *mlx, int width, int height);
+void			sl_img_free(t_sl_img *img, void *mlx);
 
-void			sl_load_imgs(t_sl_context *ctx);
-void			sl_load_anims(t_sl_context *ctx);
-
+// sl_imgs_utils.c
 void			sl_add_imgs(t_sl_context *ctx, char *key, char *path);
 t_sl_img		*sl_get_imgs(t_sl_imgs *imgs, char *key);
 void			sl_imgs_free(t_sl_imgs *imgs, void *mlx);
 
-void			sl_move_player(t_sl_context *c);
-void			*sl_move_new(int new_move);
+// sl_load_anims.c
+void			sl_load_anims(t_sl_context *ctx);
 
-void			sl_move_enemy(t_sl_context *c);
+// sl_load_imgs.c
+void			sl_load_imgs(t_sl_context *ctx);
 
-void			sl_ui_display_moves(t_sl_img *buffer_img, t_sl_context *c);
-t_sl_img		*sl_ui_get_move_img(t_sl_context *c, t_list *move_list);
-
+// sl_map_utils.c
 int				sl_is_wall(t_sl_context *c, int x, int y);
 void			sl_map_free(t_sl_map *map, void *mlx);
 void			sl_init_map(t_sl_map **map);
 void			sl_check_map(t_sl_context *ctx);
 
+// sl_map_utils2.c
 void			*sl_map_data_new(char *str);
 void			sl_check_missing_key(t_sl_context *ctx);
 void			sl_check_invalid_path_coll(t_sl_context *ctx);
 void			sl_check_invalid_path_exit(t_sl_context *ctx);
 void			sl_map_copy_image(t_sl_img *buffer, t_sl_context *c);
 
-void			sl_free_content(void *content);
-void			sl_no_free_content(void *content);
-
+// sl_math_utils.c
 int				sl_abs(int n);
 
-void			sl_pathfind(t_sl_context *ctx, t_sl_pathfind *pf);
+// sl_move_enemy.c
+void			sl_move_enemy(t_sl_context *c);
 
+// sl_move_utils.c
+void			*sl_move_new(int new_move);
+void			sl_move_player(t_sl_context *c);
+
+// sl_parse_map.c
+void			sl_parse_map_image(t_sl_context *ctx, char c, int x, int y);
+void			sl_loop_map(t_sl_context *ctx,
+					void (*f)(t_sl_context *ctx, char c, int x, int y));
+void			sl_parse_map(t_sl_context *c, char *path);
+
+// sl_pathfind_utils.c
 int				*sl_astar_get_neighbours(int x, int y);
 t_sl_astar_node	*sl_astar_get_node(t_list *queue, int x, int y);
 void			sl_astar_sort_queue(t_list *queue);
 
+// sl_pathfind_utils2.c
 int				sl_astar_h_cost(int x, int y, int ex, int ey);
 t_sl_pathfind	*sl_pf_new(int sx, int sy, int ex, int ey);
 t_sl_astar_node	*sl_astar_new(int x, int y, int g_cost, int h_cost);
-void			sl_pf_iter_neighbour(t_sl_pathfind *pf, t_list **open,
-					t_sl_astar_node *curr, int i);
 
-void			sl_ui_print_count(t_sl_img *buffer, t_sl_context *c);
+// sl_pathfind.c
+void			sl_pathfind(t_sl_context *ctx, t_sl_pathfind *pf);
+
+// sl_player_utils.c
+t_sl_player		*sl_player_init(void);
+void			sl_player_set_coords(t_sl_context *ctx, int x, int y);
+void			sl_player_free(t_sl_player *player);
+void			sl_player_copy_image(t_sl_img *buffer, t_sl_context *c);
+
+// sl_ui_display_count.c
+void			sl_ui_display_count(t_sl_img *buffer, t_sl_context *c);
+
+// sl_ui_display_moves.c
+void			sl_ui_display_moves(t_sl_img *buffer_img, t_sl_context *c);
+
+// so_long.c
+int				sl_close(t_sl_context *ctx);
 
 #endif

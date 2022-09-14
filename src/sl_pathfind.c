@@ -6,13 +6,13 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 17:31:09 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 05:21:34 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:38:34 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	sl_pf_iter_neighbour(t_sl_pathfind *pf, t_list **open,
+static void	sl_pf_iter_neighbour(t_sl_pathfind *pf, t_list **open,
 	t_sl_astar_node *curr, int i)
 {
 	t_sl_astar_node	*new;
@@ -39,7 +39,7 @@ void	sl_pf_iter_neighbour(t_sl_pathfind *pf, t_list **open,
 	sl_astar_sort_queue(*open);
 }
 
-t_sl_astar_node	*sl_astar_pop(t_list **queue)
+static t_sl_astar_node	*sl_astar_pop(t_list **queue)
 {
 	t_list			*temp;
 	t_sl_astar_node	*node;
@@ -53,7 +53,7 @@ t_sl_astar_node	*sl_astar_pop(t_list **queue)
 	return (node);
 }
 
-t_list	*sl_pf_get_moves(t_sl_pathfind *pf, t_list *closed)
+static t_list	*sl_pf_get_moves(t_sl_pathfind *pf, t_list *closed)
 {
 	t_sl_astar_node	*node;
 	t_list			*moves;
@@ -68,7 +68,7 @@ t_list	*sl_pf_get_moves(t_sl_pathfind *pf, t_list *closed)
 	return (moves);
 }
 
-int	sl_pf_loop(t_sl_context *ctx, t_sl_pathfind *pf,
+static int	sl_pf_loop(t_sl_context *ctx, t_sl_pathfind *pf,
 	t_list **open, t_list **closed)
 {
 	t_sl_astar_node	*curr;

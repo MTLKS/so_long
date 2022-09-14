@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 19:12:29 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 05:05:55 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:32:41 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	sl_render(t_sl_context *c)
 		sl_enemy_copy_image(buffer, c);
 		sl_player_copy_image(buffer, c);
 		sl_ui_display_moves(buffer, c);
-		sl_ui_print_count(buffer, c);
+		sl_ui_display_count(buffer, c);
 		mlx_put_image_to_window(c->mlx, c->win, buffer->img, 0, 0);
 		mlx_destroy_image(c->mlx, buffer->img);
 		free(buffer);

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sl_ui_utils.c                                      :+:      :+:    :+:   */
+/*   sl_ui_display_moves.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:07:02 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/12 21:03:39 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:23:46 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_sl_img	*sl_ui_get_move_img(t_sl_context *c, t_list *move_list)
+static t_sl_img	*sl_ui_get_move_img(t_sl_context *c, t_list *move_list)
 {
 	int			move;
 	t_sl_img	*img;

@@ -6,13 +6,13 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:21:10 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/10 17:45:46 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:34:21 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	sl_ispixelblack(char *buffer, int pixel)
+static int	sl_ispixelblack(char *buffer, int pixel)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 19:08:34 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/11 17:56:56 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:37:12 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_sl_astar_node	*sl_astar_get_node(t_list *queue, int x, int y)
 	return (NULL);
 }
 
-void	sl_astar_swap(t_list *a, t_list *b)
+static void	sl_astar_swap(t_list *a, t_list *b)
 {
 	void	*temp;
 
@@ -49,7 +49,7 @@ void	sl_astar_swap(t_list *a, t_list *b)
 	b->content = temp;
 }
 
-int	sl_astar_compare(t_sl_astar_node *curr, t_sl_astar_node *next)
+static int	sl_astar_compare(t_sl_astar_node *curr, t_sl_astar_node *next)
 {
 	return (curr->g_cost + curr->h_cost > next->g_cost + next->h_cost);
 }

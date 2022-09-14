@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sl_print_move.c                                    :+:      :+:    :+:   */
+/*   sl_ui_display_count.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maliew <maliew@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 20:45:22 by maliew            #+#    #+#             */
-/*   Updated: 2022/09/14 01:06:46 by maliew           ###   ########.fr       */
+/*   Updated: 2022/09/14 12:24:36 by maliew           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_sl_img	*sl_get_movecount_img(t_sl_context *c, int n)
+static t_sl_img	*sl_get_movecount_img(t_sl_context *c, int n)
 {
 	if (n == 0)
 		return (sl_get_imgs(c->imgs, "0"));
@@ -36,7 +36,7 @@ t_sl_img	*sl_get_movecount_img(t_sl_context *c, int n)
 		return (sl_get_imgs(c->imgs, "9"));
 }
 
-void	sl_put_movecount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
+static void	sl_put_movecount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
 {
 	static int	x;
 
@@ -48,7 +48,7 @@ void	sl_put_movecount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
 	x++;
 }
 
-void	sl_put_collcount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
+static void	sl_put_collcount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
 {
 	static int	x;
 
@@ -61,7 +61,7 @@ void	sl_put_collcount(t_sl_img *buffer, t_sl_context *c, int n, int flag)
 	x++;
 }
 
-void	sl_ui_print_count(t_sl_img *buffer, t_sl_context *c)
+void	sl_ui_display_count(t_sl_img *buffer, t_sl_context *c)
 {
 	sl_copy_image(buffer, sl_get_imgs(c->imgs, "move_count"), 0, 0);
 	sl_put_movecount(buffer, c, c->move_count, 1);
